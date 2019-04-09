@@ -105,7 +105,7 @@ void sendExit(int fd, char nickname[13], struct sockaddr_in peerAddr)
 }
 
 //send discover msg, recv answer from friend, build list of all peers
-struct sockaddr_in* linkToChat(int fd, char* friendIP, unsigned int localPort)
+struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort)
 {
   printf("linktochat\n");
   int sendbytes;
@@ -115,39 +115,23 @@ struct sockaddr_in* linkToChat(int fd, char* friendIP, unsigned int localPort)
     
   pDiscoverMsg->typ = DISCOVER;
   printf("after build pdu\n");
-  
-  //build sockaddr
-  struct sockaddr_in* friendAddr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
-  memset(&friendAddr, 0, sizeof(friendAddr));
-      printf("after memset\n");
 
-  friendAddr->sin_family = AF_INET;
-  friendAddr->sin_port = htons(localPort);
-  printf("after set port\n");
-  friendAddr->sin_addr.s_addr = inet_addr(friendIP);
-    printf("after setup friendAddr\n");
-
-  
   // send discover msg
-  sendbytes = sendto(fd, (const struct chatPDU*)pDiscoverMsg, sizeof(*pDiscoverMsg), 0, (struct sockaddr*)&friendAddr, sizeof(friendAddr));
+  sendbytes = sendto(fd, (const struct chatPDU*)pDiscoverMsg, sizeof(*pDiscoverMsg), 0, (struct sockaddr*)pFriendAddr, sizeof(*pFriendAddr));
   if(sendbytes < 0)
   {
     perror("sendDiscover sendto:");
   }
     printf("linktochat: send %d bytes\n", sendbytes);
   
-  
-  
-  struct sockaddr* newFriendAddr = (struct sockaddr*)malloc(sizeof(struct sockaddr));
-  newFriendAddr = (struct sockaddr*)friendAddr;
   // wait for answer
-  unsigned int friendAddrLen = 0; 
+  unsigned int friendAddrLen; 
   int recvBytes;
     
-  friendAddrLen = sizeof((struct sockaddr)*newFriendAddr);
+  friendAddrLen = sizeof(*pFriendAddr);
   struct chatPDU* pAnswerMsg = (struct chatPDU*)malloc(sizeof(struct chatPDU));
 
-  recvBytes = recvfrom(fd, (struct chatPDU*)pAnswerMsg, sizeof(*pAnswerMsg), 0, newFriendAddr, &friendAddrLen);
+  recvBytes = recvfrom(fd, (struct chatPDU*)pAnswerMsg, sizeof(*pAnswerMsg), 0, pFriendAddr, &friendAddrLen);
   if(recvBytes < 0)
   {
     perror("recvfrom:");
