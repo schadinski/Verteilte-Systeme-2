@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[])
 {
-//  printf("first line \n");
+  printf("first line \n");
     
   //argv[1] = frindIP
   //argv[2] = myIP
@@ -23,20 +23,26 @@ int main(int argc, char *argv[])
   int i;
   int* peerFDs;
   struct sockaddr_in* allPeerAddrs;
-  char* myIP;
+  //char myIP[20];
   int localFD;
  // char* allIPs;
-  in_addr_t friendIP;
+  //in_addr_t friendIP;
   int activePeers = 0;
-  struct sockaddr_in* myAddr;
+  struct sockaddr_in myAddr;
   
-//  printf("after var init\n");
+  printf("after var init\n");
   nickname = malloc(32*sizeof(char));
 //  friendIP = malloc(sizeof(in_addr_t);
   //allIPs = (in_addr_t*)malloc(MAXPEERS*sizeof(in_addr_t));
-//  printf("start\n");
+ // printf("argv[2] is %s\n", argv[2]);
+  //myIP = malloc(sizeof(argv[2])*sizeof(char));
   
-  friendIP = inet_addr(argv[1]);
+  //strncpy(myIP,argv[2], sizeof(argv[2]));
+    //strcpy(myIP,argv[2]);
+
+  //friendIP = inet_addr(argv[1]);
+  //  printf("after set friendip\n");
+
   //allIPs[activePeers] = inet_addr(argv[1]);
   //TODO senDiscover braucht localFD
  // sendDiscover(friendIP, localPort);
@@ -50,23 +56,30 @@ int main(int argc, char *argv[])
 //                                - sendEntry() an alle
   
   // build own Addresse
-  myAddr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
+ // myAddr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
     memset(&myAddr, 0, sizeof(myAddr));
     
     localFD = socket( AF_INET, SOCK_DGRAM, 0);
-    
-    myAddr->sin_family = AF_INET;
-    myAddr->sin_port = htons(localPort);
-    myAddr->sin_addr.s_addr = inet_addr(myIP);
-    int rc = bind(localFD, (struct sockaddr*)myAddr, sizeof(myAddr));
+    printf("after socket\n");
+    myAddr.sin_family = AF_INET;
+        printf("after sin_family\n");
+
+    myAddr.sin_port = htons(localPort);
+    printf("after set port\n");
+    myAddr.sin_addr.s_addr = inet_addr(argv[2]);
+    printf("after setup myAddr\n");
+    struct sockaddr_in* pMyAddr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
+    pMyAddr = &myAddr;
+    int rc = bind(localFD, (struct sockaddr*)pMyAddr, sizeof(pMyAddr));
       if (rc < 0)
       {
         printf("Error: Bind local FD\n");
         perror("bind()");
       }
-      
-  allPeerAddrs = linkToChat(localFD, friendIP, localPort);
-  
+  printf("before linktochat\n");
+
+  allPeerAddrs = linkToChat(localFD, argv[1], localPort);
+  printf("after linktochat\n");
     // setup all peer addresses
 /*  for(i = 0; i < MAXPEERS; i++)
   {
