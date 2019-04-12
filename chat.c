@@ -131,11 +131,12 @@ int main(int argc, char *argv[])
   }
   
   size_t noOfPeers = sizeof(*allPeerAddrs)/sizeof(struct sockaddr_in);
-  //printf("noOfPeers is %d\n", noOfPeers);
+  printf("noOfPeers is %d\n", noOfPeers);
   
   i=0;
   while(i<noOfPeers)
   {
+      printf("addr %s\n", inet_ntoa(allPeerAddrs[i].sin_addr));
       sendEntry(localFD, nickname, allPeerAddrs[i]);
       i++;
   }
