@@ -145,7 +145,7 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
                     //ggf memcpy  für rein
 
 		    memcpy(allAddrs, pAnswerMsg->msg,sizeof(allAddrs) );
-		    printf("msg is : %s\n", pAnswerMsg->msg);
+		    printf("msg received is : %s\n", pAnswerMsg->msg);
                     //allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
                     return (struct sockaddr_in*)allAddrs;
                     break;                
@@ -167,10 +167,10 @@ void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in new
   //build PDU
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
   //char* buf = malloc(4096*sizeof(char));
-  memcpy(pAnswerMsg->msg,(char*)allPeerAddrs, sizeof(allPeerAddrs) );
+  memcpy(pAnswerMsg->msg,(char*)*allPeerAddrs, sizeof(allPeerAddrs) );
   //strncpy(pAnswerMsg->msg, buf, 4096);
   pAnswerMsg->typ = ANSWER;
-  printf("sendAnswer sizeof msg: %d\n", sizeof(pAnswerMsg->msg));
+  printf("sendAnswer sizeof msg: %s\n", pAnswerMsg->msg);
   
   //send PDU
   int sendbytes = sendto(fd, (const struct chatPDU*)pAnswerMsg, sizeof(*pAnswerMsg), 0, (struct sockaddr*)&newPeerAddr, sizeof(newPeerAddr));
