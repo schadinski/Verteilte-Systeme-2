@@ -74,8 +74,8 @@ int main(int argc, char *argv[])
     else
     {
        // set my add to allPeerAddrs[1] 
-      //send discover to friens addr
-        //build friend addr
+
+      //build friend addr
       struct sockaddr_in friendAddr;
       memset(&friendAddr, 0, sizeof(friendAddr));
       
@@ -90,6 +90,9 @@ int main(int argc, char *argv[])
       pFriendAddr = &friendAddr;
       //send discover
       allPeerAddrs = linkToChat(localFD, pFriendAddr, localPort);
+      //build array
+      size_t noOfPeers = sizeof(*allPeerAddrs)/sizeof(struct sockaddr_in);
+      allPeerAddrs[noOfPeers+1] = myAddr;
       printf("after linktochat\n");
     }  
       
