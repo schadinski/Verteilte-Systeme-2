@@ -144,7 +144,7 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
     case ANSWER:    // pAnswerMsg->msg; enthält sockaddr_in als char[] bzw char*
                     //ggf memcpy  für rein
 
-		    memcpy(pAnswerMsg->msg,allAddrs, sizeof(allAddrs) );
+		    memcpy(allAddrs, pAnswerMsg->msg,sizeof(allAddrs) );
 		    printf("msg is : %s\n", pAnswerMsg->msg);
                     //allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
                     return (struct sockaddr_in*)allAddrs;
