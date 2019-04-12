@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
   size_t len;
   unsigned int localPort =50123;
   int i;
-  int* peerFDs;
+  //int* peerFDs;
   struct sockaddr_in* allPeerAddrs;
   //char myIP[20];
   int localFD;
@@ -54,9 +54,9 @@ int main(int argc, char *argv[])
     //printf("after set port\n");
     myAddr.sin_addr.s_addr = inet_addr(argv[2]);
     //printf("after setup myAddr\n");
-    struct sockaddr_in* pMyAddr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
-    pMyAddr = &myAddr;
-    int rc = bind(localFD, (struct sockaddr*)pMyAddr, sizeof(pMyAddr));
+    struct sockaddr* pMyAddr = (struct sockaddr*)malloc(sizeof(struct sockaddr_in));
+    pMyAddr = (struct sockaddr*)&myAddr;
+    int rc = bind(localFD, pMyAddr, sizeof(*pMyAddr));
       if (rc < 0)
       {
         printf("Error: Bind local FD\n");
@@ -71,6 +71,7 @@ int main(int argc, char *argv[])
     {
       //set my add in allPeerAddrs[0]
       // no discover send, wait for get discover
+      allPeerAddrs[0] = myAddr;
     }
     else
     {
@@ -128,16 +129,27 @@ int main(int argc, char *argv[])
     nameChars = getline(&nickname, &nameLen, stdin);
   }
   
-  for(i=0; i<MAXPEERS; i++)
+  size_t noOfPeers = sizeof(*allPeerAddrs)/sizeof(struct sockaddr_in);
+  //printf("noOfPeers is %d\n", noOfPeers);
+  
+  i=0;
+  while(i<noOfPeers)
+  {
+      sendEntry(localFD, nickname, allPeerAddrs[i]);
+      i++;
+  }
+
+/*  for(i=0; i<MAXPEERS; i++)
   {
   sendEntry(localFD, nickname, allPeerAddrs[i]);
   //printf("after sendEntry in main\n");
-  }
+  }*/
   FD_ZERO(&readset);
   
   // leave with !Exit
    while(1)
    {
+     noOfPeers = sizeof(*allPeerAddrs)/sizeof(struct sockaddr_in);
      char* buf2 = malloc(2096* sizeof(char));
      FD_SET(localFD, &readset);
      FD_SET(0, &readset);
@@ -152,26 +164,38 @@ int main(int argc, char *argv[])
        getline(&buf2, &len, stdin);
        if(strstr(buf2, "!Exit"))
        {
-	 for(i=0;i<(MAXPEERS);i++)
+	  i = 0;
+	  while(i<noOfPeers)
+	  {
+	      sendExit(localFD, nickname, allPeerAddrs[i]);
+	      i++;
+	  }
+	 /*for(i=0;i<(MAXPEERS);i++)
 	 {
 	 sendExit(localFD, nickname, allPeerAddrs[i]);
-	 }
+	 }*/
 	 break;
        }
        else
        {
-	  for(i=0;i<(MAXPEERS);i++)
+	 i = 0;
+	  while(i<noOfPeers)
+	  {
+	      sendMsg(localFD, nickname, buf2, allPeerAddrs[i]);
+	      i++;
+	  }
+	  /*for(i=0;i<(MAXPEERS);i++)
 	  { 
 	    sendMsg(localFD, nickname, buf2, allPeerAddrs[i]);
-	  }
+	  }*/
        }
      }
      free(buf2);
    }
- for(i=0; i<(MAXPEERS);i++)
+ /*for(i=0; i<(MAXPEERS);i++)
  {
    close(peerFDs[i]);
- }
+ }*/
  close(localPort);
  free(nickname);
  //free(friendIP);

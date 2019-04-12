@@ -128,10 +128,10 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
   unsigned int friendAddrLen; 
   int recvBytes;
     
-  friendAddrLen = sizeof(*pFriendAddr);
+  //friendAddrLen = sizeof(*pFriendAddr);
   struct chatPDU* pAnswerMsg = (struct chatPDU*)malloc(sizeof(struct chatPDU));
 
-  recvBytes = recvfrom(fd, (struct chatPDU*)pAnswerMsg, sizeof(*pAnswerMsg), 0, pFriendAddr, &friendAddrLen);
+  recvBytes = recvfrom(fd, (struct chatPDU*)pAnswerMsg, sizeof(*pAnswerMsg), 0, (struct sockaddr*)pFriendAddr, &friendAddrLen);
   if(recvBytes < 0)
   {
     perror("recvfrom:");
