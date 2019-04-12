@@ -62,10 +62,8 @@ int main(int argc, char *argv[])
         printf("Error: Bind local FD\n");
         perror("bind()");
       }
-  printf("before linktochat\n");
-  
-
-    
+    printf("before linktochat\n");
+     
     //check if i am the first peer
     if (strcmp(argv[1], argv[2])==0)
     {
@@ -81,10 +79,10 @@ int main(int argc, char *argv[])
       struct sockaddr_in friendAddr;
       memset(&friendAddr, 0, sizeof(friendAddr));
       
-      localFD = socket( AF_INET, SOCK_DGRAM, 0);
-      printf("after socket\n");
+      //int friendFD = socket( AF_INET, SOCK_DGRAM, 0);
+      //printf("after socket\n");
       friendAddr.sin_family = AF_INET;
-      printf("after sin_family\n");
+      //printf("after sin_family\n");
       friendAddr.sin_port = htons(localPort);
       //printf("after set port\n");
       friendAddr.sin_addr.s_addr = inet_addr(argv[1]);
