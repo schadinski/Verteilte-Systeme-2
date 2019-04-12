@@ -136,14 +136,17 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
   {
     perror("recvfrom:");
   }
+  printf("recvbytes in linktochat %d\n", recvBytes);
   
   struct sockaddr_in* allAddrs = (struct sockaddr_in*) malloc(sizeof(*pAnswerMsg->msg));
   switch(pAnswerMsg->typ)
   {
-    case ANSWER:      // pAnswerMsg->msg; enthält sockaddr_in als char[] bzw char*
-                      //ggf memcpy  für rein
-                      allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
-                      return allAddrs;
+    case ANSWER:    // pAnswerMsg->msg; enthält sockaddr_in als char[] bzw char*
+                    //ggf memcpy  für rein
+		    printf("msg is : %s\n", pAnswerMsg->msg);
+		    memcpy(pAnswerMsg->msg,allAddrs, (sizeof(allAddrs)+1) );
+                    //allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
+                    return (struct sockaddr_in*)allAddrs;
                     break;                
     default: 	    printf("Error: got message without typ answer\n");
                     return NULL;
@@ -162,7 +165,8 @@ void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in new
   
   //build PDU
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
-  char* buf = (char*)allPeerAddrs;
+  char* buf = malloc(4096*sizeof(char));
+  memcpy(buf,(char*)allPeerAddrs, sizeof(allPeerAddrs) );
   strncpy(pAnswerMsg->msg, buf, 4096);
   pAnswerMsg->typ = ANSWER;
   

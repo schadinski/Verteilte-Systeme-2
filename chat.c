@@ -90,6 +90,7 @@ int main(int argc, char *argv[])
       pFriendAddr = &friendAddr;
       //send discover
       allPeerAddrs = linkToChat(localFD, pFriendAddr, localPort);
+            printf("addr %s\n", inet_ntoa(allPeerAddrs[0].sin_addr));
       //build array
       size_t noOfPeers = sizeof(*allPeerAddrs)/sizeof(struct sockaddr_in);
       allPeerAddrs[noOfPeers+1] = myAddr;
