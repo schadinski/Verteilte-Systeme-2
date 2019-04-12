@@ -13,12 +13,12 @@ void recvPeerMsg(int fd, struct sockaddr_in* allPeerAddrs)
 {
 //  printf("recvfrom\n");
   struct chatPDU* pCurrMsg = malloc(sizeof(struct chatPDU));
-  struct sockaddr* peerAddr = malloc(sizeof(struct sockaddr));
+  struct sockaddr_in* peerAddr = malloc(sizeof(struct sockaddr_in));
   unsigned int peerAddrlen;
   int recvBytes;
     
   peerAddrlen = sizeof(*peerAddr);
-  recvBytes = recvfrom(fd, (struct chatPDU*)pCurrMsg, sizeof(*pCurrMsg), 0, peerAddr, &peerAddrlen);
+  recvBytes = recvfrom(fd, (struct chatPDU*)pCurrMsg, sizeof(*pCurrMsg), 0, (struct sockaddr*)peerAddr, &peerAddrlen);
   if(recvBytes < 0)
   {
     perror("recvfrom:");
@@ -35,7 +35,7 @@ void recvPeerMsg(int fd, struct sockaddr_in* allPeerAddrs)
   //printf("typ is %d, name is %s, msg is %s", pCurrMsg->typ, pCurrMsg->name, pCurrMsg->msg);
   switch(pCurrMsg->typ)
   {
-    case DISCOVER:  sendAnswer(allPeerAddrs);
+    case DISCOVER:  sendAnswer(fd, allPeerAddrs, *peerAddr);
                     break;                
     case ENTRY:     printf("%s ist dem Chat beigetreten\n", pCurrMsg->name);
                     break;
@@ -56,7 +56,7 @@ void sendMsg(int fd, char nickname[32], char* buf2, struct sockaddr_in peerAddr)
   int sendbytes;
   struct chatPDU* pCurrMsg = malloc(sizeof(struct chatPDU));
   
-  strncpy(pCurrMsg->msg, buf2, 2096);
+  strncpy(pCurrMsg->msg, buf2, 4096);
   strncpy(pCurrMsg->name, nickname, 32);
   pCurrMsg->typ = MSG;
   sendbytes = sendto(fd, (const struct chatPDU*)pCurrMsg, sizeof(*pCurrMsg), 0, (struct sockaddr*)&peerAddr, sizeof(peerAddr));
@@ -116,7 +116,7 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
   pDiscoverMsg->typ = DISCOVER;
   printf("after build pdu\n");
 
-  // send discover msg
+  // send discover msg to friend
   sendbytes = sendto(fd, (const struct chatPDU*)pDiscoverMsg, sizeof(*pDiscoverMsg), 0, (struct sockaddr*)pFriendAddr, sizeof(*pFriendAddr));
   if(sendbytes < 0)
   {
@@ -155,8 +155,23 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
   //free(&friendAddr);
 }
 
-void sendAnswer(struct sockaddr_in* allPeerAddrs)
+void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in newPeerAddr)
 {
       //ggf memcpy  für allAddrs in msg
-    printf("send answer\n");
+  printf("send answer\n");
+  
+  //build PDU
+  struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
+  char* buf = (char*)allPeerAddrs;
+  strncpy(pAnswerMsg->msg, buf, 4096);
+  pAnswerMsg->typ = ANSWER;
+  
+  //send PDU
+  int sendbytes = sendto(fd, (const struct chatPDU*)pAnswerMsg, sizeof(*pAnswerMsg), 0, (struct sockaddr*)&newPeerAddr, sizeof(newPeerAddr));
+  if(sendbytes < 0)
+  {
+    perror("sendDiscover sendto:");
+  }
+    printf("sendAnswer: send %d bytes\n", sendbytes);
+  
 }

@@ -52,6 +52,6 @@ void sendMsg(int, char[32], char*, struct sockaddr_in);
 void sendEntry(int, char[32], struct sockaddr_in);
 void sendExit(int, char [32], struct sockaddr_in);
 struct sockaddr_in* linkToChat(int, struct sockaddr_in*, unsigned int);
-void sendAnswer(struct sockaddr_in*);
+void sendAnswer(int, struct sockaddr_in*, struct sockaddr_in);
 
 #endif /* MYHEADER_H */
