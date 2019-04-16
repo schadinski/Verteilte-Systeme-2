@@ -145,7 +145,8 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
 
 		    //memcpy(allAddrs, pAnswerMsg->msg,sizeof(allAddrs) );
 		    allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
-		    printf("msg received is : %6\n", ntohs(allAddrs[0].sin_port) );
+		    //printf("msg received is : %d\n", ntohs(allAddrs[0].sin_port) );
+		    printf("addr %s\n", inet_ntoa(allAddrs[0].sin_addr));
                     //allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
                     return allAddrs;
                     break;                

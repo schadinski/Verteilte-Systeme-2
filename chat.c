@@ -91,6 +91,7 @@ int main(int argc, char *argv[])
       //send discover
       allPeerAddrs = linkToChat(localFD, pFriendAddr, localPort);
             printf("addr %s\n", inet_ntoa(allPeerAddrs[0].sin_addr));
+	    printf("msg received is : %d\n", ntohs(allPeerAddrs[0].sin_port) );
       //build array
       size_t noOfPeers = getNoOfPeers(allPeerAddrs);
       allPeerAddrs[noOfPeers+1] = myAddr;
