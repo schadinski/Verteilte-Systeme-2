@@ -145,8 +145,8 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
 
 		    //memcpy(allAddrs, pAnswerMsg->msg,sizeof(allAddrs) );
 		    allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
-		    //printf("msg received is : %d\n", ntohs(allAddrs[0].sin_port) );
-		    printf("addr %s\n", inet_ntoa(allAddrs[0].sin_addr));
+		    printf("linktochat: port received is : %d\n", ntohs(allAddrs[0].sin_port) );
+		    printf("linktochat: addr recewived is: %s\n", inet_ntoa(allAddrs[0].sin_addr));
                     //allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
                     return allAddrs;
                     break;                
@@ -162,14 +162,13 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
 
 void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in newPeerAddr)
 {
-      //ggf memcpy  für allAddrs in msg
   printf("send answer\n");
+  
+  printf("sendAnswer: send port %d\n sendAnswer: send addr %s\n", ntohs(allPeerAddrs[0].sin_port), inet_ntoa(allPeerAddrs[0].sin_addr));
   
   //build PDU
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
-  //char* buf = malloc(4096*sizeof(char));
   memcpy(pAnswerMsg->msg,(char*)&allPeerAddrs, sizeof(allPeerAddrs) );
-  //strncpy(pAnswerMsg->msg, buf, 4096);
   pAnswerMsg->typ = ANSWER;
   
   struct sockaddr_in* addresses = (struct sockaddr_in*)pAnswerMsg->msg;
