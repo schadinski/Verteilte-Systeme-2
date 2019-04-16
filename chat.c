@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
   //in_addr_t friendIP;
   int activePeers = 0;
   struct sockaddr_in myAddr;
-  struct sockaddr_in* allPeerAddrs;
+
 
   
   //printf("after var init\n");
@@ -90,20 +90,20 @@ int main(int argc, char *argv[])
       friendAddr.sin_addr.s_addr = inet_addr(argv[1]);
       struct sockaddr_in* pFriendAddr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
       pFriendAddr = &friendAddr;
-      printf("before linktochat\n");
+      //printf("before linktochat\n");
       //send discover
       allPeerAddrs = linkToChat(localFD, pFriendAddr, localPort);
-            printf("addr %s\n", inet_ntoa(allPeerAddrs[0].sin_addr));
-	    printf("msg received is : %d\n", ntohs(allPeerAddrs[0].sin_port) );
+      //printf("addr %s\n", inet_ntoa(allPeerAddrs[0].sin_addr));
+      //printf("msg received is : %d\n", ntohs(allPeerAddrs[0].sin_port) );
       //build array
       size_t noOfPeers = getNoOfPeers(allPeerAddrs);
-      printf("no of peers before add my own %d\n", noOfPeers);
+      //printf("no of peers before add my own %d\n", noOfPeers);
       allPeerAddrs[noOfPeers+1] = myAddr;
-      printf("allpeers[last] addr is %s\n", inet_ntoa(allPeerAddrs[noOfPeers+1].sin_addr));
+      //printf("allpeers[last] addr is %s\n", inet_ntoa(allPeerAddrs[noOfPeers+1].sin_addr));
       noOfPeers = getNoOfPeers(allPeerAddrs);
-      printf("no of peers after add my own %d\n", noOfPeers);
+      //printf("no of peers after add my own %d\n", noOfPeers);
 
-      printf("after linktochat\n");
+      //printf("after linktochat\n");
     }  
       
     
@@ -141,12 +141,12 @@ int main(int argc, char *argv[])
   }
   
   size_t noOfPeers = getNoOfPeers(allPeerAddrs);
-  printf("noOfPeers is %d\n", noOfPeers);
+  //printf("noOfPeers is %d\n", noOfPeers);
   
   i=0;
   while(i<noOfPeers)
   {
-      printf("addr %s\n", inet_ntoa(allPeerAddrs[i].sin_addr));
+      //printf("addr %s\n", inet_ntoa(allPeerAddrs[i].sin_addr));
       sendEntry(localFD, nickname, allPeerAddrs[i]);
       i++;
   }
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
      events = select(localFD+1, &readset, 0, 0, 0);
      if(FD_ISSET(localFD,&readset))
      {    
-	recvPeerMsg(localFD, allPeerAddrs);
+	recvPeerMsg(localFD);
      }
      if(FD_ISSET(STDIN_FILENO,&readset))
      {

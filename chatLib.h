@@ -49,7 +49,7 @@ struct chatPDU {
   char msg[4096];
 };
 
-void recvPeerMsg(int, struct sockaddr_in*);
+void recvPeerMsg(int);
 void sendMsg(int, char[32], char*, struct sockaddr_in);
 void sendEntry(int, char[32], struct sockaddr_in);
 void sendExit(int, char [32], struct sockaddr_in);
