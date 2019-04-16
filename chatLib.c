@@ -122,13 +122,11 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
   {
     perror("sendDiscover sendto:");
   }
-    printf("linktochat: send %d bytes\n", sendbytes);
+  printf("linktochat: send %d bytes\n", sendbytes);
   
   // wait for answer
   unsigned int friendAddrLen; 
   int recvBytes;
-    
-  //friendAddrLen = sizeof(*pFriendAddr);
   struct chatPDU* pAnswerMsg = (struct chatPDU*)malloc(sizeof(struct chatPDU));
 
   recvBytes = recvfrom(fd, (struct chatPDU*)pAnswerMsg, sizeof(*pAnswerMsg), 0, (struct sockaddr*)pFriendAddr, &friendAddrLen);
@@ -142,14 +140,12 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
   switch(pAnswerMsg->typ)
   {
     case ANSWER:    // pAnswerMsg->msg; enthält sockaddr_in als char[] bzw char*
-
-		    //memcpy(allAddrs, pAnswerMsg->msg,sizeof(allAddrs) );
 		    allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
 		    printf("linktochat: port received is : %d\n", ntohs(allAddrs[0].sin_port) );
 		    printf("linktochat: addr recewived is: %s\n", inet_ntoa(allAddrs[0].sin_addr));
-                    //allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
                     return allAddrs;
                     break;                
+
     default: 	    printf("Error: got message without typ answer\n");
                     return NULL;
   }
@@ -157,26 +153,30 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
 
 
   free(pDiscoverMsg);
-  //free(&friendAddr);
+  free(pAnswerMsg);
+  free(allAddrs);
 }
 
 void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in newPeerAddr)
 {
   printf("send answer\n");
   
-  printf("sendAnswer: send port %d\n sendAnswer: send addr %s\n", ntohs(allPeerAddrs[0].sin_port), inet_ntoa(allPeerAddrs[0].sin_addr));
+  printf("sendAnswer: send port %d\nsendAnswer: send addr %s\n",
+	 ntohs(allPeerAddrs[0].sin_port), inet_ntoa(allPeerAddrs[0].sin_addr));
   
   //build PDU
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
-  memcpy(pAnswerMsg->msg,&allPeerAddrs, sizeof(allPeerAddrs) );
+  memcpy(pAnswerMsg->msg,&allPeerAddrs, sizeof(*allPeerAddrs) );
   pAnswerMsg->typ = ANSWER;
   
-  struct sockaddr_in* addresses = (struct sockaddr_in*)pAnswerMsg->msg;
+  //debug
+  struct sockaddr_in* addresses = (struct sockaddr_in*)malloc(sizeof(*allPeerAddrs));
+  addresses = (struct sockaddr_in*)pAnswerMsg->msg;
   //printf("sendAnswer no of peers: %d\n", getNoOfPeers(addresses) );
   
   printf("sendAnswer after cast: send port %d\nsendAnswer after cast: send addr %s\n", 
 	 ntohs(addresses[0].sin_port), inet_ntoa(addresses[0].sin_addr));
-
+  //debug end
   
   //send PDU
   int sendbytes = sendto(fd, (const struct chatPDU*)pAnswerMsg, sizeof(*pAnswerMsg), 0, (struct sockaddr*)&newPeerAddr, sizeof(newPeerAddr));
@@ -184,8 +184,9 @@ void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in new
   {
     perror("sendDiscover sendto:");
   }
-    printf("sendAnswer: send %d bytes\n", sendbytes);
+  printf("sendAnswer: send %d bytes\n", sendbytes);
   
+  free(pAnswerMsg);
 }
 
 size_t getNoOfPeers(struct sockaddr_in* allPeers)
