@@ -22,13 +22,13 @@ int main(int argc, char *argv[])
   unsigned int localPort =50123;
   int i;
   //int* peerFDs;
-  struct sockaddr_in* allPeerAddrs;
   //char myIP[20];
   int localFD;
  // char* allIPs;
   //in_addr_t friendIP;
   int activePeers = 0;
   struct sockaddr_in myAddr;
+  struct sockaddr_in* allPeerAddrs;
 
   
   //printf("after var init\n");

@@ -23,6 +23,8 @@ static unsigned short ports[10] = { 1050,
 				    */
 # define MAXPEERS 50
 
+extern struct sockaddr_in* allPeerAddrs;
+
 //192.168.178.21 = suseVM, home
 //192.168.178.62 = suseVM HP Laptop
 //10.0.2.15 = suseVM, eth0
