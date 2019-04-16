@@ -168,11 +168,11 @@ void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in new
   
   //build PDU
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
-  memcpy(pAnswerMsg->msg,(char*)&allPeerAddrs, sizeof(allPeerAddrs) );
+  memcpy(pAnswerMsg->msg,&allPeerAddrs, sizeof(allPeerAddrs) );
   pAnswerMsg->typ = ANSWER;
   
   struct sockaddr_in* addresses = (struct sockaddr_in*)pAnswerMsg->msg;
-  printf("sendAnswer no of peers: %d\n", getNoOfPeers(addresses) );
+  //printf("sendAnswer no of peers: %d\n", getNoOfPeers(addresses) );
   
   printf("sendAnswer after cast: send port %d\nsendAnswer after cast: send addr %s\n", 
 	 ntohs(addresses[0].sin_port), inet_ntoa(addresses[0].sin_addr));
