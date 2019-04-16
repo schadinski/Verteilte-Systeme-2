@@ -142,12 +142,12 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
   switch(pAnswerMsg->typ)
   {
     case ANSWER:    // pAnswerMsg->msg; enthält sockaddr_in als char[] bzw char*
-                    //ggf memcpy  für rein
 
-		    memcpy(allAddrs, pAnswerMsg->msg,sizeof(allAddrs) );
-		    printf("msg received is : %s\n", pAnswerMsg->msg);
+		    //memcpy(allAddrs, pAnswerMsg->msg,sizeof(allAddrs) );
+		    allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
+		    printf("msg received is : %6\n", ntohs(allAddrs[0].sin_port) );
                     //allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
-                    return (struct sockaddr_in*)allAddrs;
+                    return allAddrs;
                     break;                
     default: 	    printf("Error: got message without typ answer\n");
                     return NULL;
