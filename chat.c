@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[])
 {
-  printf("first line \n");
+  //printf("first line \n");
     
   //argv[1] = frindIP
   //argv[2] = myIP
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
   struct sockaddr_in myAddr;
 
   
-  printf("after var init\n");
+  //printf("after var init\n");
   nickname = malloc(32*sizeof(char));
 
   
@@ -62,11 +62,12 @@ int main(int argc, char *argv[])
         printf("Error: Bind local FD\n");
         perror("bind()");
       }
-    printf("before linktochat\n");
+    
      
     //check if i am the first peer
     if (strcmp(argv[1], argv[2])==0)
     {
+      printf("I am first\n");
       //set my add in allPeerAddrs[0]
       // no discover send, wait for get discover
       allPeerAddrs[0] = myAddr;
@@ -75,6 +76,7 @@ int main(int argc, char *argv[])
     {
        // set my add to allPeerAddrs[x] 
 
+      printf("not the first\n");
       //build friend addr
       struct sockaddr_in friendAddr;
       memset(&friendAddr, 0, sizeof(friendAddr));
@@ -88,6 +90,7 @@ int main(int argc, char *argv[])
       friendAddr.sin_addr.s_addr = inet_addr(argv[1]);
       struct sockaddr_in* pFriendAddr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
       pFriendAddr = &friendAddr;
+      printf("before linktochat\n");
       //send discover
       allPeerAddrs = linkToChat(localFD, pFriendAddr, localPort);
             printf("addr %s\n", inet_ntoa(allPeerAddrs[0].sin_addr));
@@ -96,6 +99,7 @@ int main(int argc, char *argv[])
       size_t noOfPeers = getNoOfPeers(allPeerAddrs);
       printf("no of peers before add my own %d\n", noOfPeers);
       allPeerAddrs[noOfPeers+1] = myAddr;
+      printf("allpeers[last] addr is %s\n", inet_ntoa(allPeerAddrs[noOfPeers+1].sin_addr));
       noOfPeers = getNoOfPeers(allPeerAddrs);
       printf("no of peers after add my own %d\n", noOfPeers);
 

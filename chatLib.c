@@ -170,12 +170,12 @@ void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in new
   pAnswerMsg->typ = ANSWER;
   
   //debug
-  struct sockaddr_in* addresses = (struct sockaddr_in*)malloc(sizeof(*allPeerAddrs));
-  addresses = (struct sockaddr_in*)pAnswerMsg->msg;
+  //struct sockaddr_in* addresses = (struct sockaddr_in*)malloc(sizeof(*allPeerAddrs));
+  //addresses = (struct sockaddr_in*)pAnswerMsg->msg;
   //printf("sendAnswer no of peers: %d\n", getNoOfPeers(addresses) );
   
-  printf("sendAnswer after cast: send port %d\nsendAnswer after cast: send addr %s\n", 
-	 ntohs(addresses->sin_port), inet_ntoa(addresses->sin_addr));
+  //printf("sendAnswer after cast: send port %d\nsendAnswer after cast: send addr %s\n", 
+//	 ntohs(addresses->sin_port), inet_ntoa(addresses->sin_addr));
   //debug end
   
   //send PDU
@@ -191,6 +191,7 @@ void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in new
 
 size_t getNoOfPeers(struct sockaddr_in* allPeers)
 {
+  //printf("size all peers %d\n", sizeof(*allPeers));
   size_t noOfPeers = sizeof(*allPeers)/sizeof(struct sockaddr_in);
   return noOfPeers;
 }
