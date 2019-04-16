@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-       // set my add to allPeerAddrs[1] 
+       // set my add to allPeerAddrs[x] 
 
       //build friend addr
       struct sockaddr_in friendAddr;
@@ -94,7 +94,11 @@ int main(int argc, char *argv[])
 	    printf("msg received is : %d\n", ntohs(allPeerAddrs[0].sin_port) );
       //build array
       size_t noOfPeers = getNoOfPeers(allPeerAddrs);
+      printf("no of peers before add my own %d\n", noOfPeers);
       allPeerAddrs[noOfPeers+1] = myAddr;
+      noOfPeers = getNoOfPeers(allPeerAddrs);
+      printf("no of peers after add my own %d\n", noOfPeers);
+
       printf("after linktochat\n");
     }  
       
