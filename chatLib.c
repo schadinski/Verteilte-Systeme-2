@@ -167,7 +167,7 @@ void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in new
   //build PDU
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
   //char* buf = malloc(4096*sizeof(char));
-  memcpy(pAnswerMsg->msg,(char*)*allPeerAddrs, sizeof(allPeerAddrs) );
+  memcpy(pAnswerMsg->msg,(char*)&allPeerAddrs, sizeof(allPeerAddrs) );
   //strncpy(pAnswerMsg->msg, buf, 4096);
   pAnswerMsg->typ = ANSWER;
   printf("sendAnswer sizeof msg: %s\n", pAnswerMsg->msg);
