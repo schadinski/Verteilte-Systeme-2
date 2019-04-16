@@ -170,7 +170,9 @@ void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in new
   memcpy(pAnswerMsg->msg,(char*)&allPeerAddrs, sizeof(allPeerAddrs) );
   //strncpy(pAnswerMsg->msg, buf, 4096);
   pAnswerMsg->typ = ANSWER;
-  printf("sendAnswer sizeof msg: %s\n", pAnswerMsg->msg);
+  
+  struct sockaddr_in* addresses = (struct sockaddr_in*)pAnswerMsg->msg;
+  printf("sendAnswer no of peers: %d\n", getNoOfPeers(addresses) );
   
   //send PDU
   int sendbytes = sendto(fd, (const struct chatPDU*)pAnswerMsg, sizeof(*pAnswerMsg), 0, (struct sockaddr*)&newPeerAddr, sizeof(newPeerAddr));
@@ -180,4 +182,10 @@ void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in new
   }
     printf("sendAnswer: send %d bytes\n", sendbytes);
   
+}
+
+size_t getNoOfPeers(struct sockaddr_in* allPeers)
+{
+  size_t noOfPeers = sizeof(*allPeers)/sizeof(struct sockaddr_in);
+  return noOfPeers;
 }

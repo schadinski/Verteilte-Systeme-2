@@ -54,4 +54,6 @@ void sendExit(int, char [32], struct sockaddr_in);
 struct sockaddr_in* linkToChat(int, struct sockaddr_in*, unsigned int);
 void sendAnswer(int, struct sockaddr_in*, struct sockaddr_in);
 
+size_t getNoOfPeers(struct sockaddr_in*);
+
 #endif /* MYHEADER_H */

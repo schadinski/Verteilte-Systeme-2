@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
       allPeerAddrs = linkToChat(localFD, pFriendAddr, localPort);
             printf("addr %s\n", inet_ntoa(allPeerAddrs[0].sin_addr));
       //build array
-      size_t noOfPeers = sizeof(*allPeerAddrs)/sizeof(struct sockaddr_in);
+      size_t noOfPeers = getNoOfPeers(allPeerAddrs);
       allPeerAddrs[noOfPeers+1] = myAddr;
       printf("after linktochat\n");
     }  
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
     nameChars = getline(&nickname, &nameLen, stdin);
   }
   
-  size_t noOfPeers = sizeof(*allPeerAddrs)/sizeof(struct sockaddr_in);
+  size_t noOfPeers = getNoOfPeers(allPeerAddrs);
   printf("noOfPeers is %d\n", noOfPeers);
   
   i=0;
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
   // leave with !Exit
    while(1)
    {
-     noOfPeers = sizeof(*allPeerAddrs)/sizeof(struct sockaddr_in);
+     noOfPeers = getNoOfPeers(allPeerAddrs);
      char* buf2 = malloc(2096* sizeof(char));
      FD_SET(localFD, &readset);
      FD_SET(0, &readset);
