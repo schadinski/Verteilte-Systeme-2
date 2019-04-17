@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
       friendPeer.addr = friendAddr;
       friendPeer.nextPeer = NULL;
       
-      printf"(add friend to list\n");
+      printf("add friend to list\n");
         struct nodePeer* tmp;
 	tmp->nextPeer = head->nextPeer;
 	head->nextPeer = &friendPeer;
