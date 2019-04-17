@@ -21,19 +21,17 @@ int main(int argc, char *argv[])
   size_t len;
   unsigned int localPort =50123;
   int i;
-  //int* peerFDs;
-  //char myIP[20];
   int localFD;
- // char* allIPs;
-  //in_addr_t friendIP;
-  int activePeers = 0;
   struct sockaddr_in myAddr;
 
+  struct nodePeer peerList;
+  struct nodePeer* head;
+//   head->addr = NULL;
+  head->nextPeer = NULL;
 
   
   //printf("after var init\n");
   nickname = malloc(32*sizeof(char));
-  struct sockaddr_in* allPeerAddrs = (struct sockaddr_in*)malloc(MAXPEERS*sizeof(struct sockaddr_in));
   
   // generiere meine Addresse, inkl fd und bind
   // send discover
@@ -47,13 +45,9 @@ int main(int argc, char *argv[])
     memset(&myAddr, 0, sizeof(myAddr));
     
     localFD = socket( AF_INET, SOCK_DGRAM, 0);
-    //printf("after socket\n");
     myAddr.sin_family = AF_INET;
-    //printf("after sin_family\n");
     myAddr.sin_port = htons(localPort);
-    //printf("after set port\n");
     myAddr.sin_addr.s_addr = inet_addr(argv[2]);
-    //printf("after setup myAddr\n");
     struct sockaddr* pMyAddr = (struct sockaddr*)malloc(sizeof(struct sockaddr_in));
     pMyAddr = (struct sockaddr*)&myAddr;
     int rc = bind(localFD, pMyAddr, sizeof(*pMyAddr));
@@ -62,6 +56,10 @@ int main(int argc, char *argv[])
         printf("Error: Bind local FD\n");
         perror("bind()");
       }
+    struct nodePeer localNode;
+    localNode.addr = myAddr;
+    localNode.nextPeer = NULL;
+    head->nextPeer = &localNode;
     
      
     //check if i am the first peer
@@ -70,7 +68,8 @@ int main(int argc, char *argv[])
       printf("I am first\n");
       //set my add in allPeerAddrs[0]
       // no discover send, wait for get discover
-      allPeerAddrs[0] = myAddr;
+      //peerList.addr = myAddr;
+      //peerList.nextPeer = NULL;
     }
     else
     {
@@ -81,32 +80,35 @@ int main(int argc, char *argv[])
       struct sockaddr_in friendAddr;
       memset(&friendAddr, 0, sizeof(friendAddr));
       
-      //int friendFD = socket( AF_INET, SOCK_DGRAM, 0);
-      //printf("after socket\n");
       friendAddr.sin_family = AF_INET;
-      //printf("after sin_family\n");
       friendAddr.sin_port = htons(localPort);
-      //printf("after set port\n");
       friendAddr.sin_addr.s_addr = inet_addr(argv[1]);
       struct sockaddr_in* pFriendAddr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
       pFriendAddr = &friendAddr;
-      allPeerAddrs[0] = myAddr;
-      //allPeerAddrs[1] = friendAddr;
+      
+      struct nodePeer friendPeer;
+      friendPeer.addr = friendAddr;
+      friendPeer.nextPeer = NULL;
+      
+      //add friend to Liste
+        struct nodePeer* tmp;
+	tmp->nextPeer = head->nextPeer;
+	head->nextPeer = &friendPeer;
+	friendPeer.nextPeer = tmp->nextPeer;
+      
       //printf("before linktochat\n");
       //send discover
-      struct sockaddr_in* allAddr = (struct sockaddr_in*)malloc((MAXPEERS-2)*sizeof(struct sockaddr_in));
-      allAddr = linkToChat(localFD, pFriendAddr, localPort);
-//       struct sockaddr_in* pmaxAddr = &allAddr;
-//       allPeerAddrs = *pmaxAddr;
-      //printf("addr %s\n", inet_ntoa(allPeerAddrs[0].sin_addr));
-      //printf("msg received is : %d\n", ntohs(allPeerAddrs[0].sin_port) );
-      //build array
-      //size_t noOfPeers = getNoOfPeers(allPeerAddrs);
-      //printf("no of peers before add my own %d\n", noOfPeers);
-      //allPeerAddrs[noOfPeers+1] = myAddr;
-      //printf("allpeers[last] addr is %s\n", inet_ntoa(allPeerAddrs[noOfPeers+1].sin_addr));
-      //noOfPeers = getNoOfPeers(allPeerAddrs);
-      //printf("no of peers after add my own %d\n", noOfPeers);
+	tmp->nextPeer = linkToChat(localFD, pFriendAddr, localPort, head);
+	
+       struct nodePeer currPeer;
+       currPeer = *head->nextPeer;
+       while(currPeer.nextPeer != NULL)
+       {
+	 
+	 currPeer = *currPeer.nextPeer;
+       }
+//       tmp.nextPeer = head.nextPeer;
+//       head.nextPeer = ret;
 
       //printf("after linktochat\n");
     }  
@@ -145,16 +147,17 @@ int main(int argc, char *argv[])
     nameChars = getline(&nickname, &nameLen, stdin);
   }
   
-  printf("sizeof allPeers is %d\n", sizeof(*allPeerAddrs));
-  size_t noOfPeers = getNoOfPeers(allPeerAddrs);
+  //printf("sizeof allPeers is %d\n", sizeof(*allPeerAddrs));
+  //size_t noOfPeers = getNoOfPeers(allPeerAddrs);
   //printf("noOfPeers is %d\n", noOfPeers);
   
-  i=0;
-  while(i<noOfPeers)
+    struct nodePeer currPeer;
+    currPeer = *head->nextPeer;
+  while(currPeer.nextPeer != NULL)
   {
       //printf("addr %s\n", inet_ntoa(allPeerAddrs[i].sin_addr));
-      sendEntry(localFD, nickname, allPeerAddrs[i]);
-      i++;
+      sendEntry(localFD, nickname, currPeer.addr);
+      currPeer = *currPeer.nextPeer;
   }
 
 /*  for(i=0; i<MAXPEERS; i++)
@@ -167,7 +170,7 @@ int main(int argc, char *argv[])
   // leave with !Exit
    while(1)
    {
-     noOfPeers = getNoOfPeers(allPeerAddrs);
+     //noOfPeers = getNoOfPeers(allPeerAddrs);
      char* buf2 = malloc(2096* sizeof(char));
      FD_SET(localFD, &readset);
      FD_SET(0, &readset);
@@ -175,18 +178,18 @@ int main(int argc, char *argv[])
      events = select(localFD+1, &readset, 0, 0, 0);
      if(FD_ISSET(localFD,&readset))
      {    
-	recvPeerMsg(localFD, allPeerAddrs);
+	recvPeerMsg(localFD, head);
      }
      if(FD_ISSET(STDIN_FILENO,&readset))
      {
        getline(&buf2, &len, stdin);
        if(strstr(buf2, "!Exit"))
        {
-	  i = 0;
-	  while(i<noOfPeers)
+	  currPeer = *head->nextPeer;
+	  while(currPeer.nextPeer != NULL)
 	  {
-	      sendExit(localFD, nickname, allPeerAddrs[i]);
-	      i++;
+	      sendExit(localFD, nickname, currPeer.addr);
+	      currPeer = *currPeer.nextPeer;
 	  }
 	 /*for(i=0;i<(MAXPEERS);i++)
 	 {
@@ -196,11 +199,11 @@ int main(int argc, char *argv[])
        }
        else
        {
-	 i = 0;
-	  while(i<noOfPeers)
+	 currPeer = *head->nextPeer;
+	  while(currPeer.nextPeer != NULL)
 	  {
-	      sendMsg(localFD, nickname, buf2, allPeerAddrs[i]);
-	      i++;
+	      sendMsg(localFD, nickname, buf2, currPeer.addr);
+	      currPeer = *currPeer.nextPeer;
 	  }
 	  /*for(i=0;i<(MAXPEERS);i++)
 	  { 

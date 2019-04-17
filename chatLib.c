@@ -11,7 +11,7 @@
   //struct sockaddr_in* allPeerAddrs;
 
 // setup memory, filter msg type and output
-void recvPeerMsg(int fd, struct sockaddr_in* allPeerAddrs)
+void recvPeerMsg(int fd, struct nodePeer* head)
 {
 //  printf("recvfrom\n");
   struct chatPDU* pCurrMsg = malloc(sizeof(struct chatPDU));
@@ -37,7 +37,7 @@ void recvPeerMsg(int fd, struct sockaddr_in* allPeerAddrs)
   //printf("typ is %d, name is %s, msg is %s", pCurrMsg->typ, pCurrMsg->name, pCurrMsg->msg);
   switch(pCurrMsg->typ)
   {
-    case DISCOVER:  sendAnswer(fd, allPeerAddrs, *peerAddr);
+    case DISCOVER:  sendAnswer(fd, head, *peerAddr);
                     break;                
     case ENTRY:     printf("%s ist dem Chat beigetreten\n", pCurrMsg->name);
 		    // TODO: add new addr to allPeerAddrs
@@ -110,7 +110,7 @@ void sendExit(int fd, char nickname[13], struct sockaddr_in peerAddr)
 }
 
 //send discover msg, recv answer from friend, build list of all peers
-struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort)
+struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort, struct nodePeer* head)
 {
   //printf("linktochat\n");
   int sendbytes;
@@ -141,14 +141,16 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
   }
   //printf("recvbytes in linktochat %d\n", recvBytes);
   
-  struct sockaddr_in* allAddrs = (struct sockaddr_in*) malloc(sizeof(*pAnswerMsg->msg));
+  struct sockaddr_in* allAddrs = (struct sockaddr_in*) malloc(sizeof(*pAnswerMsg->msg));  
+  
   switch(pAnswerMsg->typ)
   {
     case ANSWER:    // pAnswerMsg->msg; enthält sockaddr_in als char[] bzw char*
 		    allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
 		    //printf("linktochat: port received is : %d\n", ntohs(allAddrs[0].sin_port) );
 		    //printf("linktochat: addr recewived is: %s\n", inet_ntoa(allAddrs[0].sin_addr));
-                    return allAddrs;
+		   
+		    return buildList(head, allAddrs);
                     break;                
 
     default: 	    printf("Error: got message without typ answer\n");
@@ -162,7 +164,7 @@ struct sockaddr_in* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned
   free(allAddrs);
 }
 
-void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in newPeerAddr)
+void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
 {
   //printf("send answer\n");
   
@@ -170,8 +172,23 @@ void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in new
 //	 ntohs(allPeerAddrs[0].sin_port), inet_ntoa(allPeerAddrs[0].sin_addr));
   
   //build PDU
+  
+  //TODO copiere alle struct sockaddr_in in neue var(typ struct sockaddr_in[]) und versende diese
+  struct nodePeer currNode;
+  currNode.nextPeer = head->nextPeer;
+  
+  struct sockaddr_in allAddr[MAXPEERS];
+  
+  int i = 0;
+  while(currNode.nextPeer != NULL)
+  {
+    //copy
+    allAddr[i] = currNode.addr;
+    currNode = *currNode.nextPeer;
+  }
+  
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
-  memcpy(&pAnswerMsg->msg,allPeerAddrs, sizeof(*allPeerAddrs) );
+  memcpy(&pAnswerMsg->msg,allAddr, sizeof(allAddr) );
   pAnswerMsg->typ = ANSWER;
   
   //debug
@@ -192,6 +209,26 @@ void sendAnswer(int fd, struct sockaddr_in* allPeerAddrs, struct sockaddr_in new
   //printf("sendAnswer: send %d bytes\n", sendbytes);
   
   free(pAnswerMsg);
+}
+
+//build new peerNode List with all the sockaddr_in
+struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
+{
+  // TODO: 
+  struct nodePeer tmpNode;
+  struct nodePeer* tmp;
+  tmpNode.nextPeer = head->nextPeer;
+  
+  
+  int i = 0;
+  while(allAddrs++ != NULL)
+  {
+    tmp = head->nextPeer;
+    head->nextPeer = &tmpNode;
+    
+    tmpNode.addr = *allAddrs;
+    tmpNode.nextPeer = tmp;
+  }
 }
 
 size_t getNoOfPeers(struct sockaddr_in* allPeers)
