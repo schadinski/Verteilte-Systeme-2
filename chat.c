@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
   head->nextPeer = NULL;
 
   
-  //printf("after var init\n");
+  printf("after var init\n");
   nickname = malloc(32*sizeof(char));
   
   // generiere meine Addresse, inkl fd und bind
@@ -90,13 +90,13 @@ int main(int argc, char *argv[])
       friendPeer.addr = friendAddr;
       friendPeer.nextPeer = NULL;
       
-      //add friend to Liste
+      printf"(add friend to list\n");
         struct nodePeer* tmp;
 	tmp->nextPeer = head->nextPeer;
 	head->nextPeer = &friendPeer;
 	friendPeer.nextPeer = tmp->nextPeer;
       
-      //printf("before linktochat\n");
+      printf("before linktochat\n");
       //send discover
 	tmp->nextPeer = linkToChat(localFD, pFriendAddr, localPort, head);
 	
