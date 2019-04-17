@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
 //       tmp.nextPeer = head.nextPeer;
 //       head.nextPeer = ret;
 
-      //printf("after linktochat\n");
+      printf("after linktochat\n");
     }  
       
     

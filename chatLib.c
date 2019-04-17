@@ -112,14 +112,14 @@ void sendExit(int fd, char nickname[13], struct sockaddr_in peerAddr)
 //send discover msg, recv answer from friend, build list of all peers
 struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort, struct nodePeer* head)
 {
-  //printf("linktochat\n");
+  printf("start linktochat\n");
   int sendbytes;
   
   //build pdu
   struct chatPDU* pDiscoverMsg = (struct chatPDU*)malloc(sizeof(struct chatPDU));
     
   pDiscoverMsg->typ = DISCOVER;
-  //printf("after build pdu\n");
+  printf("after build pdu\n");
 
   // send discover msg to friend
   sendbytes = sendto(fd, (const struct chatPDU*)pDiscoverMsg, sizeof(*pDiscoverMsg), 0, (struct sockaddr*)pFriendAddr, sizeof(*pFriendAddr));
@@ -127,7 +127,7 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
   {
     perror("sendDiscover sendto:");
   }
-  //printf("linktochat: send %d bytes\n", sendbytes);
+  printf("linktochat: send %d bytes\n", sendbytes);
   
   // wait for answer
   unsigned int friendAddrLen; 
@@ -139,7 +139,7 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
   {
     perror("recvfrom:");
   }
-  //printf("recvbytes in linktochat %d\n", recvBytes);
+  printf("recvbytes in linktochat %d\n", recvBytes);
   
   struct sockaddr_in* allAddrs = (struct sockaddr_in*) malloc(sizeof(*pAnswerMsg->msg));  
   
@@ -214,7 +214,7 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
 //build new peerNode List with all the sockaddr_in
 struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
 {
-  // TODO: 
+  printf("start buildList\n"); 
   struct nodePeer tmpNode;
   struct nodePeer* tmp;
   tmpNode.nextPeer = head->nextPeer;
@@ -229,6 +229,7 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
     tmpNode.addr = *allAddrs;
     tmpNode.nextPeer = tmp;
   }
+  printf("end buildList\n");
 }
 
 size_t getNoOfPeers(struct sockaddr_in* allPeers)
