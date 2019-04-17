@@ -219,15 +219,14 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
   struct nodePeer* tmp = (struct nodePeer*)malloc(sizeof(struct nodePeer));
   tmpNode.nextPeer = head->nextPeer;
   
-  
-  int i = 0;
-  while(allAddrs++ != NULL)
+  while(allAddrs->sin_family == AF_INET)
   {
     tmp = head->nextPeer;
     head->nextPeer = &tmpNode;
     
     tmpNode.addr = *allAddrs;
     tmpNode.nextPeer = tmp;
+    allAddrs++;
   }
   return head;
   printf("end buildList\n");
