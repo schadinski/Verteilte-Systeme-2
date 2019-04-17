@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   
   //printf("after var init\n");
   nickname = malloc(32*sizeof(char));
-
+  struct sockaddr_in* allPeerAddrs = (struct sockaddr_in*)malloc(MAXPEERS*sizeof(struct sockaddr_in));
   
   // generiere meine Addresse, inkl fd und bind
   // send discover
@@ -90,17 +90,22 @@ int main(int argc, char *argv[])
       friendAddr.sin_addr.s_addr = inet_addr(argv[1]);
       struct sockaddr_in* pFriendAddr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
       pFriendAddr = &friendAddr;
+      allPeerAddrs[0] = myAddr;
+      allPeerAddrs[1] = friendAddr;
       //printf("before linktochat\n");
       //send discover
-      allPeerAddrs = linkToChat(localFD, pFriendAddr, localPort);
+      struct sockaddr_in* allAddr = (struct sockaddr_in*)malloc((MAXPEERS-2)*sizeof(struct sockaddr_in));
+      allAddr = linkToChat(localFD, pFriendAddr, localPort);
+      allPeerAddrs += 2;
+      allPeerAddrs = allAddr;
       //printf("addr %s\n", inet_ntoa(allPeerAddrs[0].sin_addr));
       //printf("msg received is : %d\n", ntohs(allPeerAddrs[0].sin_port) );
       //build array
-      size_t noOfPeers = getNoOfPeers(allPeerAddrs);
+      //size_t noOfPeers = getNoOfPeers(allPeerAddrs);
       //printf("no of peers before add my own %d\n", noOfPeers);
-      allPeerAddrs[noOfPeers+1] = myAddr;
+      //allPeerAddrs[noOfPeers+1] = myAddr;
       //printf("allpeers[last] addr is %s\n", inet_ntoa(allPeerAddrs[noOfPeers+1].sin_addr));
-      noOfPeers = getNoOfPeers(allPeerAddrs);
+      //noOfPeers = getNoOfPeers(allPeerAddrs);
       //printf("no of peers after add my own %d\n", noOfPeers);
 
       //printf("after linktochat\n");
@@ -169,7 +174,7 @@ int main(int argc, char *argv[])
      events = select(localFD+1, &readset, 0, 0, 0);
      if(FD_ISSET(localFD,&readset))
      {    
-	recvPeerMsg(localFD);
+	recvPeerMsg(localFD, allPeerAddrs);
      }
      if(FD_ISSET(STDIN_FILENO,&readset))
      {

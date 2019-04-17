@@ -23,7 +23,7 @@ static unsigned short ports[10] = { 1050,
 				    */
 # define MAXPEERS 50
 
-extern struct sockaddr_in* allPeerAddrs;
+//extern struct sockaddr_in* allPeerAddrs;
 
 //192.168.178.21 = suseVM, home
 //192.168.178.62 = suseVM HP Laptop
@@ -49,7 +49,7 @@ struct chatPDU {
   char msg[4096];
 };
 
-void recvPeerMsg(int);
+void recvPeerMsg(int, struct sockaddr_in*);
 void sendMsg(int, char[32], char*, struct sockaddr_in);
 void sendEntry(int, char[32], struct sockaddr_in);
 void sendExit(int, char [32], struct sockaddr_in);

@@ -8,10 +8,10 @@
 
 #include "chatLib.h"
 
-  struct sockaddr_in* allPeerAddrs;
+  //struct sockaddr_in* allPeerAddrs;
 
 // setup memory, filter msg type and output
-void recvPeerMsg(int fd)
+void recvPeerMsg(int fd, struct sockaddr_in* allPeerAddrs)
 {
 //  printf("recvfrom\n");
   struct chatPDU* pCurrMsg = malloc(sizeof(struct chatPDU));
