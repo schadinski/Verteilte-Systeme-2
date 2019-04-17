@@ -24,8 +24,8 @@ int main(int argc, char *argv[])
   int localFD;
   struct sockaddr_in myAddr;
 
-  struct nodePeer peerList;
-  struct nodePeer* head;
+//   struct nodePeer peerList;
+  struct nodePeer* head = (struct nodePeer*)malloc(sizeof(struct nodePeer));
 //   head->addr = NULL;
   head->nextPeer = NULL;
 
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
       friendPeer.nextPeer = NULL;
       
       printf("add friend to list\n");
-        struct nodePeer* tmp;
+        struct nodePeer* tmp = (struct nodePeer*)malloc(sizeof(struct nodePeer));
 	tmp->nextPeer = head->nextPeer;
 	head->nextPeer = &friendPeer;
 	friendPeer.nextPeer = tmp->nextPeer;
