@@ -145,6 +145,7 @@ int main(int argc, char *argv[])
     nameChars = getline(&nickname, &nameLen, stdin);
   }
   
+  printf("sizeof allPeers is %d\n", sizeof(*allPeerAddrs));
   size_t noOfPeers = getNoOfPeers(allPeerAddrs);
   //printf("noOfPeers is %d\n", noOfPeers);
   
