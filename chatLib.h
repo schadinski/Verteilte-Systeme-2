@@ -49,12 +49,19 @@ struct chatPDU {
   char msg[4096];
 };
 
-void recvPeerMsg(int, struct sockaddr_in*);
+struct nodePeer {
+  struct sockaddr_in addr;
+  struct nodePeer* nextPeer;
+};
+
+void recvPeerMsg(int, struct nodePeer*);
 void sendMsg(int, char[32], char*, struct sockaddr_in);
 void sendEntry(int, char[32], struct sockaddr_in);
 void sendExit(int, char [32], struct sockaddr_in);
-struct sockaddr_in* linkToChat(int, struct sockaddr_in*, unsigned int);
-void sendAnswer(int, struct sockaddr_in*, struct sockaddr_in);
+struct nodePeer* linkToChat(int, struct sockaddr_in*, unsigned int, struct nodePeer*);
+void sendAnswer(int, struct nodePeer* , struct sockaddr_in);
+
+struct nodePeer* buildList(struct nodePeer*, struct sockaddr_in*);
 
 size_t getNoOfPeers(struct sockaddr_in*);
 
