@@ -216,7 +216,7 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
 {
   printf("start buildList\n"); 
   struct nodePeer tmpNode;
-  struct nodePeer* tmp;
+  struct nodePeer* tmp = (struct nodePeer*)malloc(sizeof(struct nodePeer));
   tmpNode.nextPeer = head->nextPeer;
   
   
@@ -229,6 +229,7 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
     tmpNode.addr = *allAddrs;
     tmpNode.nextPeer = tmp;
   }
+  return head;
   printf("end buildList\n");
 }
 
