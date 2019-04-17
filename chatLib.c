@@ -41,8 +41,8 @@ void recvPeerMsg(int fd, struct sockaddr_in* allPeerAddrs)
                     break;                
     case ENTRY:     printf("%s ist dem Chat beigetreten\n", pCurrMsg->name);
 		    // TODO: add new addr to allPeerAddrs
-		    size_t noOfPeers = getNoOfPeers(allPeerAddrs);
-		    allPeerAddrs[noOfPeers+1] = *peerAddr;
+		    //size_t noOfPeers = getNoOfPeers(allPeerAddrs);
+// 		    allPeerAddrs[noOfPeers+1] = *peerAddr;
                     break;
     case MSG: 	    printf("%s: %s", pCurrMsg->name, pCurrMsg->msg);
                     break;

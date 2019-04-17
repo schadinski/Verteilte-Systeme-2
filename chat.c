@@ -91,13 +91,13 @@ int main(int argc, char *argv[])
       struct sockaddr_in* pFriendAddr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
       pFriendAddr = &friendAddr;
       allPeerAddrs[0] = myAddr;
-      allPeerAddrs[1] = friendAddr;
+      //allPeerAddrs[1] = friendAddr;
       //printf("before linktochat\n");
       //send discover
       struct sockaddr_in* allAddr = (struct sockaddr_in*)malloc((MAXPEERS-2)*sizeof(struct sockaddr_in));
       allAddr = linkToChat(localFD, pFriendAddr, localPort);
-      allPeerAddrs += 2;
-      allPeerAddrs = allAddr;
+//       struct sockaddr_in* pmaxAddr = &allAddr;
+//       allPeerAddrs = *pmaxAddr;
       //printf("addr %s\n", inet_ntoa(allPeerAddrs[0].sin_addr));
       //printf("msg received is : %d\n", ntohs(allPeerAddrs[0].sin_port) );
       //build array
