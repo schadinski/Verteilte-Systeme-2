@@ -3,12 +3,7 @@
 // * Hier gibt es sicherlich optimierungsmöglichkeiten, z.B. sind 
 //   alle drei send-Funktionen sehr ähnlich.
 
-// * Debugging-Statements verbleiben im Code, da diese für Teil 2
-//   nützlich sein werden.
-
 #include "chatLib.h"
-
-  //struct sockaddr_in* allPeerAddrs;
 
 // setup memory, filter msg type and output
 void recvPeerMsg(int fd, struct nodePeer* head)
@@ -57,7 +52,7 @@ void recvPeerMsg(int fd, struct nodePeer* head)
 // setup memory and PDU, send
 void sendMsg(int fd, char nickname[32], char* buf2, struct sockaddr_in peerAddr)
 {
-//  printf("send\n");
+  printf("send\n");
   int sendbytes;
   struct chatPDU* pCurrMsg = malloc(sizeof(struct chatPDU));
   
@@ -69,14 +64,14 @@ void sendMsg(int fd, char nickname[32], char* buf2, struct sockaddr_in peerAddr)
   {
     perror("sendMsg sendto:");
   }
-//  printf("Msg: send %d bytes\n", sendbytes);
+  printf("SENDMsg: send %d bytes\n", sendbytes);
   free(pCurrMsg);
 }
 
 // setup memory and PDU, send
 void sendEntry(int fd, char nickname[32], struct sockaddr_in peerAddr)
 {
-//  printf("entry\n");
+  printf("entry\n");
   int sendbytes;
   struct chatPDU* pEntryMsg = (struct chatPDU*)malloc(sizeof(struct chatPDU));
     
@@ -88,14 +83,14 @@ void sendEntry(int fd, char nickname[32], struct sockaddr_in peerAddr)
   {
     perror("sendEntry sendto:");
   }
-//  printf("Entry: send %d bytes\n", sendbytes);
+  printf("Entry: send %d bytes\n", sendbytes);
   free(pEntryMsg);
 }
 
 // setup memory and PDU, send
 void sendExit(int fd, char nickname[13], struct sockaddr_in peerAddr)
 {
-//  printf("exit\n");
+  printf("exit\n");
   int sendbytes;
   struct chatPDU* pExitMsg = malloc(sizeof(struct chatPDU));
   pExitMsg->typ = EXIT;
@@ -105,7 +100,7 @@ void sendExit(int fd, char nickname[13], struct sockaddr_in peerAddr)
   {
     perror("sendExit sendto:");
   }
-//  printf("Exit: send %d bytes\n", sendbytes);
+  printf("Exit: send %d bytes\n", sendbytes);
   free(pExitMsg);
 }
 
@@ -166,7 +161,7 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
 
 void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
 {
-  //printf("send answer\n");
+  printf("send answer\n");
   
   //printf("sendAnswer: send port %d\nsendAnswer: send addr %s\n",
 //	 ntohs(allPeerAddrs[0].sin_port), inet_ntoa(allPeerAddrs[0].sin_addr));
@@ -204,9 +199,9 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   int sendbytes = sendto(fd, (const struct chatPDU*)pAnswerMsg, sizeof(*pAnswerMsg), 0, (struct sockaddr*)&newPeerAddr, sizeof(newPeerAddr));
   if(sendbytes < 0)
   {
-    perror("sendDiscover sendto:");
+    perror("sendAnswer sendto:");
   }
-  //printf("sendAnswer: send %d bytes\n", sendbytes);
+  printf("sendAnswer: send %d bytes\n", sendbytes);
   
   free(pAnswerMsg);
 }
@@ -228,8 +223,8 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
     tmpNode.nextPeer = tmp;
     allAddrs++;
   }
-  return head;
   printf("end buildList\n");
+  return head;
 }
 
 size_t getNoOfPeers(struct sockaddr_in* allPeers)
