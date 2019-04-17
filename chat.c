@@ -159,6 +159,7 @@ int main(int argc, char *argv[])
       sendEntry(localFD, nickname, currPeer.addr);
       currPeer = *currPeer.nextPeer;
   }
+  currPeer.nextPeer = NULL;
 
 /*  for(i=0; i<MAXPEERS; i++)
   {
@@ -191,6 +192,7 @@ int main(int argc, char *argv[])
 	      sendExit(localFD, nickname, currPeer.addr);
 	      currPeer = *currPeer.nextPeer;
 	  }
+	    currPeer.nextPeer = NULL;
 	 /*for(i=0;i<(MAXPEERS);i++)
 	 {
 	 sendExit(localFD, nickname, allPeerAddrs[i]);
@@ -205,6 +207,7 @@ int main(int argc, char *argv[])
 	      sendMsg(localFD, nickname, buf2, currPeer.addr);
 	      currPeer = *currPeer.nextPeer;
 	  }
+	    currPeer.nextPeer = NULL;
 	  /*for(i=0;i<(MAXPEERS);i++)
 	  { 
 	    sendMsg(localFD, nickname, buf2, allPeerAddrs[i]);
