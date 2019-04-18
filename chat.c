@@ -97,9 +97,10 @@ int main(int argc, char *argv[])
 // 	debugging = *debugging.nextPeer;
 // 	printf(" second addr after link to chat: %s\n", inet_ntoa(debugging.addr.sin_addr));
 // 	
+		head->nextPeer = &tmp;
 	printf("length of list after link to chat is %d\n", getListLength(head) );
 	
-	head->nextPeer = &tmp;
+
 	sleep(5);	
 
       printf("after linktochat\n");
