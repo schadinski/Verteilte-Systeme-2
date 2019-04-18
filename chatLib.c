@@ -180,7 +180,7 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   
   //TODO copiere alle struct sockaddr_in in neue var(typ struct sockaddr_in[]) und versende diese
   struct nodePeer currNode;
-  currNode.nextPeer = head->nextPeer;
+  currNode = *head;
   
   struct sockaddr_in allAddr[MAXPEERS];
   
