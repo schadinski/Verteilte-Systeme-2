@@ -198,7 +198,7 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   while(currNode.nextPeer != NULL);
   
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
-  memcpy(&pAnswerMsg->msg,allAddr, (MAXPEERS * sizeof(struct sockaddr_in)) );
+  memcpy(&pAnswerMsg->msg,(char*)allAddr, (MAXPEERS * sizeof(struct sockaddr_in)) );
   pAnswerMsg->typ = ANSWER;
   
   //debug
