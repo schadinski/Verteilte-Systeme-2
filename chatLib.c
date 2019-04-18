@@ -207,7 +207,7 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   pAnswerMsg->typ = ANSWER;
   
   //debug
-  struct sockaddr_in* addresses = (struct sockaddr_in*)malloc(sizeof(*allPeerAddrs));
+  struct sockaddr_in* addresses = (struct sockaddr_in*)malloc(getListLength(head) * sizeof(struct sockaddr_in));
   addresses = (struct sockaddr_in*)pAnswerMsg->msg;
   //printf("sendAnswer no of peers: %d\n", getNoOfPeers(addresses) );
   
