@@ -242,7 +242,7 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
     struct nodePeer newNode;    
     newNode.addr = *allAddrs;
     
-    printf("in list: addr from socksddr* is %s\n",  inet_ntoa(allAddrs->sin_addr));
+    printf("in list: addr from sockaddr* is %s\n",  inet_ntoa(allAddrs->sin_addr));
     
     struct nodePeer tmp;
     tmp.nextPeer = head->nextPeer;
@@ -259,6 +259,7 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
 
 int getListLength(struct nodePeer* head)
 {
+  printf("start getListLength\n");
  int ret = 0;
  struct nodePeer tmp;
  tmp = *head;
@@ -267,5 +268,6 @@ int getListLength(struct nodePeer* head)
    ret++;
    tmp = *tmp.nextPeer;
  }
+ printf("length is %d\n", ret);
  return ret; 
 }

@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
 // 	
 	printf("length of list after link to chat is %d\n", getListLength(head) );
 	
-		head->nextPeer = &tmp;
+	head->nextPeer = &tmp;
 	sleep(5);	
 
       printf("after linktochat\n");
