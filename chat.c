@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
       friendPeer.nextPeer = NULL;
       
 //       printf("add friend to list\n");
-//         struct nodePeer* tmp = (struct nodePeer*)malloc(sizeof(struct nodePeer));
+         struct nodePeer* tmp = (struct nodePeer*)malloc(sizeof(struct nodePeer));
 // 	tmp->nextPeer = head->nextPeer;
 // 	head->nextPeer = &friendPeer;
 // 	friendPeer.nextPeer = tmp->nextPeer;
@@ -101,7 +101,8 @@ int main(int argc, char *argv[])
       printf("before linktochat\n");
       //send discover
 	head = linkToChat(localFD, pFriendAddr, localPort, head);
-	printf(" first addr in list is: %s\n", inet_ntoa(*head->nextPeer.addr.sin_addr));
+	tmp = head->nextPeer;
+	printf(" first addr in list is: %s\n", inet_ntoa(tmp->addr.sin_addr));
 		
        struct nodePeer currPeer;
        currPeer = *head->nextPeer;
