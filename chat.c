@@ -54,9 +54,9 @@ int main(int argc, char *argv[])
     printf("length of list is %d\n", getListLength(head) );
     
     //debug
-    struct nodePeer debug;
-    debug = *head->nextPeer;
-    printf(" first addr should be my own: %s\n", inet_ntoa(debug.addr.sin_addr));
+//     struct nodePeer debug;
+//     debug = *head->nextPeer;
+//     printf(" first addr should be my own: %s\n", inet_ntoa(debug.addr.sin_addr));
     //debug end
      
     //check if i am the first peer
