@@ -202,7 +202,9 @@ int main(int argc, char *argv[])
        }
        else
        {
+	 printf("else, send msg\n");
 	 currPeer = *head->nextPeer;
+	 printf("send msg, after setup currPeer\n");
 	  while(currPeer.nextPeer != NULL)
 	  {
 	      printf("while send msg: addr is: %s\n", inet_ntoa(currPeer.addr.sin_addr));
