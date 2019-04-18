@@ -188,7 +188,7 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   while(currNode.nextPeer != NULL)
   {
     //copy
-    allAddr[i] = currNode.addr;
+    memcpy(allAddr[i],currNode.addr, sizeof(allAddr[i]));
     printf("addr is %s\n", inet_ntoa(allAddr[i].sin_addr));
     currNode = *currNode.nextPeer;
   }
