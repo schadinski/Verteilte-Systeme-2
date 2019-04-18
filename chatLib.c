@@ -236,7 +236,7 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
     struct nodePeer newNode;    
     newNode.addr = *allAddrs;
     
-    printf("in list: addr from socksddr* is %s\n",  *allAddrs);
+    printf("in list: addr from socksddr* is %s\n",  inet_ntoa(allAddrs->sin_addr));
     
     struct nodePeer tmp;
     tmp.nextPeer = head->nextPeer;
