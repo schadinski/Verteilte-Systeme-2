@@ -169,6 +169,7 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
 //   free(pDiscoverMsg);
 //   free(pAnswerMsg);
 //   free(allAddrs);
+printf("end link to chat\n");
   return ret;
 }
 
