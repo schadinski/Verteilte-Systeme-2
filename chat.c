@@ -86,6 +86,7 @@ int main(int argc, char *argv[])
       printf("before linktochat\n");
       //send discover
 	tmp.nextPeer = linkToChat(localFD, pFriendAddr, localPort, head);
+	printf(" tmp addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
 	head->nextPeer = &tmp;
 //  	printf(" first addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
 	
