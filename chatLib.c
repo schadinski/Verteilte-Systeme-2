@@ -273,3 +273,21 @@ int getListLength(struct nodePeer* head)
  printf("length is %d\n", ret);
  return ret; 
 }
+
+//######################################################################################
+
+void printList(struct nodePeer* head)
+{
+  printf("start printList\n");
+ int ret = 0;
+ struct nodePeer tmp;
+ tmp = *head;
+ while(tmp.nextPeer != NULL)
+ {
+  printf("Addr is %s\n",inet_ntoa(tmp.addr.sin_addr)); 
+  tmp = *tmp.nextPeer;
+ }
+
+ 
+ printf("length is %d\n", ret);
+}

@@ -90,6 +90,7 @@ int main(int argc, char *argv[])
 
 //  	printf(" first addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
 	head->nextPeer = &tmp;
+	printList(head);
 	//tmp ist Kopie von lacalNode
 // 	struct nodePeer debugging;
 // 	debugging = *tmp.nextPeer;
