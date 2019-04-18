@@ -263,6 +263,7 @@ int getListLength(struct nodePeer* head)
  while(tmp.nextPeer != NULL)
  {
    ret++;
+   tmp = *tmp.nextPeer;
  }
  return ret; 
 }
