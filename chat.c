@@ -108,7 +108,10 @@ int main(int argc, char *argv[])
 	tmp.nextPeer = linkToChat(localFD, pFriendAddr, localPort, head);
 	head->nextPeer = &tmp;
 	printf(" first addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
-		
+	struct nodePeer debugging;
+	debugging = *tmp.nextPeer;
+	printf(" second addr after link to chat: %s\n", inet_ntoa(debugging.addr.sin_addr));
+	sleep(5);	
 //        struct nodePeer currPeer;
 //        currPeer = *head->nextPeer;
 //        while(currPeer.nextPeer != NULL)
@@ -168,6 +171,7 @@ int main(int argc, char *argv[])
       //printf("addr %s\n", inet_ntoa(allPeerAddrs[i].sin_addr));
       printf("while send entry: addr is: %s\n", inet_ntoa(currPeer.addr.sin_addr));
       sendEntry(localFD, nickname, currPeer.addr);
+      sleep(5);
       
   }
   while(currPeer.nextPeer != NULL);
