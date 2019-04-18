@@ -107,9 +107,11 @@ int main(int argc, char *argv[])
       //send discover
 	tmp.nextPeer = linkToChat(localFD, pFriendAddr, localPort, head);
 	head->nextPeer = &tmp;
-	printf(" first addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
+// 	printf(" first addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
 	struct nodePeer debugging;
-	debugging = *tmp.nextPeer;
+	debugging = *head->nextPeer;
+	printf(" first addr after link to chat: %s\n", inet_ntoa(debugging.addr.sin_addr));
+	debugging = *debugging.nextPeer;
 	printf(" second addr after link to chat: %s\n", inet_ntoa(debugging.addr.sin_addr));
 	sleep(5);	
 //        struct nodePeer currPeer;
