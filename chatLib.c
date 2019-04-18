@@ -222,17 +222,20 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
 struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
 {
   printf("start buildList\n"); 
-  struct nodePeer tmpNode;
-  struct nodePeer* tmp = (struct nodePeer*)malloc(sizeof(struct nodePeer));
-  tmpNode.nextPeer = head->nextPeer;
+  
+  //struct nodePeer* tmp = (struct nodePeer*)malloc(sizeof(struct nodePeer));
+  //tmpNode.nextPeer = head->nextPeer;
   
   while(allAddrs->sin_family == AF_INET)
   {
-    tmp = head->nextPeer;
-    head->nextPeer = &tmpNode;
+    struct nodePeer newNode;    
+    newNode.addr = *allAddrs;
     
-    tmpNode.addr = *allAddrs;
-    tmpNode.nextPeer = tmp;
+    struct nodePeer tmp;
+    tmp.nextPeer = head->nextPeer;
+    
+    head->nextPeer = &newNode;
+    newNode.nextPeer = tmp.nextPeer;
     allAddrs++;
   }
   printf("end buildList\n");
