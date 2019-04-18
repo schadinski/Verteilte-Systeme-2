@@ -189,16 +189,18 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   currNode = *head;
 //   currNode = *currNode.nextPeer;
   
-  struct sockaddr_in* allAddr = (struct sockaddr_in*) malloc(getListLength(head) * sizeof(struct sockaddr_in));
+  //struct sockaddr_in* allAddr = (struct sockaddr_in*) malloc(getListLength(head) * sizeof(struct sockaddr_in));
+  int length = getListLength(head);
+  struct sockaddr_in allAddr[length];
   int i= 0;
-  for(i = 0; i<getListLength(head);i++)
+  for(i = 0; i<length;i++)
   {
     currNode = *currNode.nextPeer;
     //copy
     //memcpy(&allAddr[i],currNode.addr, sizeof(allAddr[i]));
-    allAddr = &currNode.addr;
+    allAddr[i] = currNode.addr;
     printf("addr is %s\n", inet_ntoa(allAddr->sin_addr));
-    allAddr++;
+    //allAddr++;
     
   }
   
