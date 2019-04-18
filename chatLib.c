@@ -189,9 +189,9 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   currNode = *head;
 //   currNode = *currNode.nextPeer;
   
-  struct sockaddr_in* allAddr = (struct sockaddr_in*) malloc(MAXPEERS * sizeof(struct sockaddr_in));
-  
-  do
+  struct sockaddr_in* allAddr = (struct sockaddr_in*) malloc(getListLength(head) * sizeof(struct sockaddr_in));
+  int i= 0;
+  for(i = 0; i<getListLength(head);i++)
   {
     currNode = *currNode.nextPeer;
     //copy
@@ -201,10 +201,9 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
     allAddr++;
     
   }
-  while(currNode.nextPeer != NULL);
   
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
-  memcpy(&pAnswerMsg->msg,(char*)allAddr, (MAXPEERS * sizeof(struct sockaddr_in)) );
+  memcpy(&pAnswerMsg->msg,(char*)allAddr, (getListLength(head) * sizeof(struct sockaddr_in)) );
   pAnswerMsg->typ = ANSWER;
   
   //debug
