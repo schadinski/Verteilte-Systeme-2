@@ -8,7 +8,7 @@
 // setup memory, filter msg type and output
 void recvPeerMsg(int fd, struct nodePeer* head)
 {
-//  printf("recvfrom\n");
+  printf("recvfrom\n");
   struct chatPDU* pCurrMsg = malloc(sizeof(struct chatPDU));
   struct sockaddr_in* peerAddr = malloc(sizeof(struct sockaddr_in));
   unsigned int peerAddrlen;
@@ -66,7 +66,7 @@ void sendMsg(int fd, char nickname[32], char* buf2, struct sockaddr_in peerAddr)
   {
     perror("sendMsg sendto:");
   }
-  printf("SENDMsg: send %d bytes\n", sendbytes);
+  //printf("SENDMsg: send %d bytes\n", sendbytes);
   free(pCurrMsg);
 }
 
@@ -87,7 +87,7 @@ void sendEntry(int fd, char nickname[32], struct sockaddr_in peerAddr)
   {
     perror("sendEntry sendto:");
   }
-  printf("Entry: send %d bytes\n", sendbytes);
+  //printf("Entry: send %d bytes\n", sendbytes);
   free(pEntryMsg);
 }
 
@@ -106,7 +106,7 @@ void sendExit(int fd, char nickname[13], struct sockaddr_in peerAddr)
   {
     perror("sendExit sendto:");
   }
-  printf("Exit: send %d bytes\n", sendbytes);
+  //printf("Exit: send %d bytes\n", sendbytes);
   free(pExitMsg);
 }
 
@@ -122,7 +122,7 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
   struct chatPDU* pDiscoverMsg = (struct chatPDU*)malloc(sizeof(struct chatPDU));
     
   pDiscoverMsg->typ = DISCOVER;
-  printf("after build pdu\n");
+  //printf("after build pdu\n");
 
   // send discover msg to friend
   sendbytes = sendto(fd, (const struct chatPDU*)pDiscoverMsg, sizeof(*pDiscoverMsg), 0, (struct sockaddr*)pFriendAddr, sizeof(*pFriendAddr));
@@ -220,7 +220,7 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   {
     perror("sendAnswer sendto:");
   }
-  printf("sendAnswer: send %d bytes\n", sendbytes);
+  //printf("sendAnswer: send %d bytes\n", sendbytes);
   
   free(pAnswerMsg);
 }
@@ -255,9 +255,14 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
 
 //####################################################################################
 
-size_t getNoOfPeers(struct sockaddr_in* allPeers)
+int getListLength(struct nodePeer* head)
 {
-  //printf("size all peers %d\n", sizeof(*allPeers));
-  size_t noOfPeers = sizeof(*allPeers)/sizeof(struct sockaddr_in);
-  return noOfPeers;
+ int ret = 0;
+ struct nodePeer tmp;
+ tmp = *head;
+ while(tmp.nextPeer != NULL)
+ {
+   ret++;
+ }
+ return ret; 
 }

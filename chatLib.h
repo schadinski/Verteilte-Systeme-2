@@ -62,7 +62,6 @@ struct nodePeer* linkToChat(int, struct sockaddr_in*, unsigned int, struct nodeP
 void sendAnswer(int, struct nodePeer* , struct sockaddr_in);
 
 struct nodePeer* buildList(struct nodePeer*, struct sockaddr_in*);
-
-size_t getNoOfPeers(struct sockaddr_in*);
+int getListLength(struct nodePeer*);
 
 #endif /* MYHEADER_H */

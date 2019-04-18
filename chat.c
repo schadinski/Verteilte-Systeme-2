@@ -24,22 +24,12 @@ int main(int argc, char *argv[])
   int localFD;
   struct sockaddr_in myAddr;
 
-//   struct nodePeer peerList;
   struct nodePeer* head = (struct nodePeer*)malloc(sizeof(struct nodePeer));
-//   head->addr = NULL;
   head->nextPeer = NULL;
 
   
-  printf("after var init\n");
+  //printf("after var init\n");
   nickname = malloc(32*sizeof(char));
-  
-  // generiere meine Addresse, inkl fd und bind
-  // send discover
-  // lausche auf antwort:
-  //        recvfrom mit timeout-> dann return 1
-  //        recvfrom erfolgreich: - hole alle addressen raus
-  //                              - fertige Liste mit allen addressen + meiner Adresse
-//                                - sendEntry() an alle
   
   // build own Addresse
     memset(&myAddr, 0, sizeof(myAddr));
@@ -56,10 +46,12 @@ int main(int argc, char *argv[])
         printf("Error: Bind local FD\n");
         perror("bind()");
       }
+    // own node is first in list
     struct nodePeer localNode;
     localNode.addr = myAddr;
     localNode.nextPeer = NULL;
     head->nextPeer = &localNode;
+    printf("length of list is %d\n", getListLength(head) );
     
     //debug
     struct nodePeer debug;
@@ -71,16 +63,11 @@ int main(int argc, char *argv[])
     if (strcmp(argv[1], argv[2])==0)
     {
       printf("I am first\n");
-      //set my add in allPeerAddrs[0]
-      // no discover send, wait for get discover
-      //peerList.addr = myAddr;
-      //peerList.nextPeer = NULL;
     }
     else
     {
-       // set my add to allPeerAddrs[x] 
-
       printf("not the first\n");
+      
       //build friend addr
       struct sockaddr_in friendAddr;
       memset(&friendAddr, 0, sizeof(friendAddr));
@@ -90,17 +77,10 @@ int main(int argc, char *argv[])
       friendAddr.sin_addr.s_addr = inet_addr(argv[1]);
       struct sockaddr_in* pFriendAddr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
       pFriendAddr = &friendAddr;
-      
-      struct nodePeer friendPeer;
-      friendPeer.addr = friendAddr;
-      friendPeer.nextPeer = NULL;
-      
-//       printf("add friend to list\n");
+
          struct nodePeer tmp;// = (struct nodePeer*)malloc(sizeof(struct nodePeer));
  	tmp = *head->nextPeer;
-// 	head->nextPeer = &friendPeer;
-// 	friendPeer.nextPeer = tmp->nextPeer;
- 	printf("tmp addr is: %s\n", inet_ntoa(tmp.addr.sin_addr));
+ 	printf("tmp addr is my own: %s\n", inet_ntoa(tmp.addr.sin_addr));
       
 	//tmp->nextPeer = NULL;
       printf("before linktochat\n");
@@ -108,21 +88,14 @@ int main(int argc, char *argv[])
 	tmp.nextPeer = linkToChat(localFD, pFriendAddr, localPort, head);
 	head->nextPeer = &tmp;
 // 	printf(" first addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
+	printf("length of list after link to chat is %d\n", getListLength(head) );
+	
 	struct nodePeer debugging;
 	debugging = *head->nextPeer;
 	printf(" first addr after link to chat: %s\n", inet_ntoa(debugging.addr.sin_addr));
 	debugging = *debugging.nextPeer;
 	printf(" second addr after link to chat: %s\n", inet_ntoa(debugging.addr.sin_addr));
 	sleep(5);	
-//        struct nodePeer currPeer;
-//        currPeer = *head->nextPeer;
-//        while(currPeer.nextPeer != NULL)
-//        {
-// 	 
-// 	 currPeer = *currPeer.nextPeer;
-//        }
-//       tmp.nextPeer = head.nextPeer;
-//       head.nextPeer = ret;
 
       printf("after linktochat\n");
     }  
