@@ -80,24 +80,24 @@ int main(int argc, char *argv[])
 
          struct nodePeer tmp;// = (struct nodePeer*)malloc(sizeof(struct nodePeer));
  	tmp = *head->nextPeer;
- 	printf("tmp addr is my own: %s\n", inet_ntoa(tmp.addr.sin_addr));
+ 	printf(" tmp addr is my own: %s\n", inet_ntoa(tmp.addr.sin_addr));
       
 	//tmp->nextPeer = NULL;
       printf("before linktochat\n");
       //send discover
 	tmp.nextPeer = linkToChat(localFD, pFriendAddr, localPort, head);
-	printf(" tmp addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
+// 	printf(" tmp addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
 
 //  	printf(" first addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
-	
-	
-	struct nodePeer debugging;
-	debugging = *tmp.nextPeer;
-	printf(" tmp next addr after link to chat: %s\n", inet_ntoa(debugging.addr.sin_addr));
+	head->nextPeer = &tmp;
+	//tmp ist Kopie von lacalNode
+// 	struct nodePeer debugging;
+// 	debugging = *tmp.nextPeer;
+// 	printf(" tmp next addr after link to chat: %s\n", inet_ntoa(debugging.addr.sin_addr));
 // 	debugging = *debugging.nextPeer;
 // 	printf(" second addr after link to chat: %s\n", inet_ntoa(debugging.addr.sin_addr));
 // 	
-		head->nextPeer = &tmp;
+
 	printf("length of list after link to chat is %d\n", getListLength(head) );
 	
 
