@@ -181,10 +181,11 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   //TODO copiere alle struct sockaddr_in in neue var(typ struct sockaddr_in[]) und versende diese
   struct nodePeer currNode;
   currNode = *head;
+//   currNode = *currNode.nextPeer;
   
   struct sockaddr_in* allAddr = (struct sockaddr_in*) malloc(MAXPEERS * sizeof(struct sockaddr_in));
   
-  while(currNode.nextPeer != NULL)
+  do
   {
     currNode = *currNode.nextPeer;
     //copy
@@ -192,7 +193,9 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
     allAddr = &currNode.addr;
     printf("addr is %s\n", inet_ntoa(allAddr->sin_addr));
     allAddr++;
+    
   }
+  while(currNode.nextPeer != NULL);
   
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
   memcpy(&pAnswerMsg->msg,allAddr, (MAXPEERS * sizeof(struct sockaddr_in)) );
