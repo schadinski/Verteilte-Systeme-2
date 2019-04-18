@@ -207,12 +207,11 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   pAnswerMsg->typ = ANSWER;
   
   //debug
-  //struct sockaddr_in* addresses = (struct sockaddr_in*)malloc(sizeof(*allPeerAddrs));
-  //addresses = (struct sockaddr_in*)pAnswerMsg->msg;
+  struct sockaddr_in* addresses = (struct sockaddr_in*)malloc(sizeof(*allPeerAddrs));
+  addresses = (struct sockaddr_in*)pAnswerMsg->msg;
   //printf("sendAnswer no of peers: %d\n", getNoOfPeers(addresses) );
   
-  //printf("sendAnswer after cast: send port %d\nsendAnswer after cast: send addr %s\n", 
-//	 ntohs(addresses->sin_port), inet_ntoa(addresses->sin_addr));
+  printf("sendAnswer after cast: send addr %s\n", inet_ntoa(addresses->sin_addr));
   //debug end
   
   //send PDU
