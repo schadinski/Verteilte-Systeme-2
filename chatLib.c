@@ -189,6 +189,7 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   {
     //copy
     allAddr[i] = currNode.addr;
+    printf("addr is %s\n", inet_ntoa(allAddr[i].sin_addr));
     currNode = *currNode.nextPeer;
   }
   
