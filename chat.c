@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
   //printf("noOfPeers is %d\n", noOfPeers);
   
     struct nodePeer currPeer;
-    currPeer = *head->nextPeer;
+    currPeer = *head;
   while(currPeer.nextPeer != NULL)
   {
       //printf("addr %s\n", inet_ntoa(allPeerAddrs[i].sin_addr));
