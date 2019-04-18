@@ -145,6 +145,7 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
   printf("recvbytes in linktochat %d\n", recvBytes);
   
   struct sockaddr_in* allAddrs = (struct sockaddr_in*) malloc(sizeof(*pAnswerMsg->msg));  
+  struct nodePeer* ret = NULL;
   
   switch(pAnswerMsg->typ)
   {
@@ -153,11 +154,13 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
 		    //printf("linktochat: port received is : %d\n", ntohs(allAddrs[0].sin_port) );
 		    //printf("linktochat: addr recewived is: %s\n", inet_ntoa(allAddrs[0].sin_addr));
 		   
-		    return buildList(head, allAddrs);
+		    ret = buildList(head, allAddrs);
+		    if(ret == NULL)
+		      printf("got no data\n");
                     break;                
 
     default: 	    printf("Error: got message without typ answer\n");
-                    return NULL;
+                    break;
   }
   
 
@@ -165,6 +168,7 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
   free(pDiscoverMsg);
   free(pAnswerMsg);
   free(allAddrs);
+  return ret;
 }
 
 //####################################################################################
