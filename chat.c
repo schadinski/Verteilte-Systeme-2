@@ -61,6 +61,11 @@ int main(int argc, char *argv[])
     localNode.nextPeer = NULL;
     head->nextPeer = &localNode;
     
+    //debug
+    struct nodePeer debug;
+    debug = *head->nextPeer;
+    printf(" first addr should be my own: %s\n", inet_ntoa(debug.addr.sin_addr));
+    //debug end
      
     //check if i am the first peer
     if (strcmp(argv[1], argv[2])==0)
@@ -91,26 +96,26 @@ int main(int argc, char *argv[])
       friendPeer.nextPeer = NULL;
       
 //       printf("add friend to list\n");
-         struct nodePeer* tmp = (struct nodePeer*)malloc(sizeof(struct nodePeer));
-// 	tmp->nextPeer = head->nextPeer;
+         struct nodePeer tmp;// = (struct nodePeer*)malloc(sizeof(struct nodePeer));
+ 	tmp = *head->nextPeer;
 // 	head->nextPeer = &friendPeer;
 // 	friendPeer.nextPeer = tmp->nextPeer;
-// 	printf("friends addr in list is: %s\n", inet_ntoa(friendPeer.addr.sin_addr));
+ 	printf("tmp addr is: %s\n", inet_ntoa(tmp.addr.sin_addr));
       
 	//tmp->nextPeer = NULL;
       printf("before linktochat\n");
       //send discover
-	head = linkToChat(localFD, pFriendAddr, localPort, head);
-	tmp = head->nextPeer;
-	printf(" first addr in list is: %s\n", inet_ntoa(tmp->addr.sin_addr));
+	tmp.nextPeer = linkToChat(localFD, pFriendAddr, localPort, head);
+	head->nextPeer = &tmp;
+	printf(" first addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
 		
-       struct nodePeer currPeer;
-       currPeer = *head->nextPeer;
-       while(currPeer.nextPeer != NULL)
-       {
-	 
-	 currPeer = *currPeer.nextPeer;
-       }
+//        struct nodePeer currPeer;
+//        currPeer = *head->nextPeer;
+//        while(currPeer.nextPeer != NULL)
+//        {
+// 	 
+// 	 currPeer = *currPeer.nextPeer;
+//        }
 //       tmp.nextPeer = head.nextPeer;
 //       head.nextPeer = ret;
 
@@ -156,14 +161,17 @@ int main(int argc, char *argv[])
   //printf("noOfPeers is %d\n", noOfPeers);
   
     struct nodePeer currPeer;
-    currPeer = *head;
-  while(currPeer.nextPeer != NULL)
+    currPeer = *head;//->nextPeer;
+  do
   {
+    currPeer = *currPeer.nextPeer;
       //printf("addr %s\n", inet_ntoa(allPeerAddrs[i].sin_addr));
       printf("while send entry: addr is: %s\n", inet_ntoa(currPeer.addr.sin_addr));
       sendEntry(localFD, nickname, currPeer.addr);
-      currPeer = *currPeer.nextPeer;
+      
   }
+  while(currPeer.nextPeer != NULL);
+  
   currPeer.nextPeer = NULL;
 
 /*  for(i=0; i<MAXPEERS; i++)
@@ -191,12 +199,14 @@ int main(int argc, char *argv[])
        getline(&buf2, &len, stdin);
        if(strstr(buf2, "!Exit"))
        {
-	  currPeer = *head->nextPeer;
-	  while(currPeer.nextPeer != NULL)
+	  currPeer = *head;
+	  do
 	  {
-	      sendExit(localFD, nickname, currPeer.addr);
 	      currPeer = *currPeer.nextPeer;
+	      sendExit(localFD, nickname, currPeer.addr);
+
 	  }
+	  while(currPeer.nextPeer != NULL);
 	    currPeer.nextPeer = NULL;
 	 /*for(i=0;i<(MAXPEERS);i++)
 	 {
@@ -209,12 +219,14 @@ int main(int argc, char *argv[])
 	 printf("else, send msg\n");
 	 currPeer = *head;
 	 printf("send msg, after setup currPeer\n");
-	  while(currPeer.nextPeer != NULL)
+	  do
 	  {
+	    	      currPeer = *currPeer.nextPeer;
 	      printf("while send msg: addr is: %s\n", inet_ntoa(currPeer.addr.sin_addr));
 	      sendMsg(localFD, nickname, buf2, currPeer.addr);
-	      currPeer = *currPeer.nextPeer;
+
 	  }
+	  while(currPeer.nextPeer != NULL);
 	    currPeer.nextPeer = NULL;
 	  /*for(i=0;i<(MAXPEERS);i++)
 	  { 
