@@ -182,15 +182,16 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   struct nodePeer currNode;
   currNode = *head;
   
-  struct sockaddr_in allAddr[MAXPEERS];
+  struct sockaddr_in* allAddr = (struct sockaddr_in*) malloc(MAXPEERS * sizeof(struct sockaddr_in));
   
-  int i = 0;
   while(currNode.nextPeer != NULL)
   {
-    //copy
-    memcpy(allAddr[i],currNode.addr, sizeof(allAddr[i]));
-    printf("addr is %s\n", inet_ntoa(allAddr[i].sin_addr));
     currNode = *currNode.nextPeer;
+    //copy
+    //memcpy(&allAddr[i],currNode.addr, sizeof(allAddr[i]));
+    allAddr = &currNode.addr;
+    printf("addr is %s\n", inet_ntoa(allAddr->sin_addr));
+    allAddr++;
   }
   
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
