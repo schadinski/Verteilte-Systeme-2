@@ -156,9 +156,10 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
 		   
 		    ret = buildList(head, allAddrs);
 		    if(ret == NULL)
+		    {
 		      printf("got no data\n");
+		    }
                     break;                
-
     default: 	    printf("Error: got message without typ answer\n");
                     break;
   }
