@@ -156,6 +156,7 @@ int main(int argc, char *argv[])
   while(currPeer.nextPeer != NULL)
   {
       //printf("addr %s\n", inet_ntoa(allPeerAddrs[i].sin_addr));
+      printf("while send entry: addr is: %s\n", inet_ntoa(currPeer.addr.sin_addr));
       sendEntry(localFD, nickname, currPeer.addr);
       currPeer = *currPeer.nextPeer;
   }
@@ -204,6 +205,7 @@ int main(int argc, char *argv[])
 	 currPeer = *head->nextPeer;
 	  while(currPeer.nextPeer != NULL)
 	  {
+	      printf("while send msg: addr is: %s\n", inet_ntoa(currPeer.addr.sin_addr));
 	      sendMsg(localFD, nickname, buf2, currPeer.addr);
 	      currPeer = *currPeer.nextPeer;
 	  }

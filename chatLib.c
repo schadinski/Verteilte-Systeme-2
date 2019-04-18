@@ -49,6 +49,8 @@ void recvPeerMsg(int fd, struct nodePeer* head)
   free(pCurrMsg);
 }
 
+//####################################################################################
+
 // setup memory and PDU, send
 void sendMsg(int fd, char nickname[32], char* buf2, struct sockaddr_in peerAddr)
 {
@@ -67,6 +69,8 @@ void sendMsg(int fd, char nickname[32], char* buf2, struct sockaddr_in peerAddr)
   printf("SENDMsg: send %d bytes\n", sendbytes);
   free(pCurrMsg);
 }
+
+//####################################################################################
 
 // setup memory and PDU, send
 void sendEntry(int fd, char nickname[32], struct sockaddr_in peerAddr)
@@ -87,6 +91,8 @@ void sendEntry(int fd, char nickname[32], struct sockaddr_in peerAddr)
   free(pEntryMsg);
 }
 
+//####################################################################################
+
 // setup memory and PDU, send
 void sendExit(int fd, char nickname[13], struct sockaddr_in peerAddr)
 {
@@ -103,6 +109,8 @@ void sendExit(int fd, char nickname[13], struct sockaddr_in peerAddr)
   printf("Exit: send %d bytes\n", sendbytes);
   free(pExitMsg);
 }
+
+//####################################################################################
 
 //send discover msg, recv answer from friend, build list of all peers
 struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort, struct nodePeer* head)
@@ -159,6 +167,8 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
   free(allAddrs);
 }
 
+//####################################################################################
+
 void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
 {
   printf("send answer\n");
@@ -206,6 +216,8 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   free(pAnswerMsg);
 }
 
+//####################################################################################
+
 //build new peerNode List with all the sockaddr_in
 struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
 {
@@ -226,6 +238,8 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
   printf("end buildList\n");
   return head;
 }
+
+//####################################################################################
 
 size_t getNoOfPeers(struct sockaddr_in* allPeers)
 {
