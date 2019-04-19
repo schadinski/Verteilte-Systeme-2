@@ -156,7 +156,7 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
 		    //printf("linktochat: port received is : %d\n", ntohs(allAddrs[0].sin_port) );
 		    //printf("linktochat: addr recewived is: %s\n", inet_ntoa(allAddrs[0].sin_addr));
 		   
-		    ret = buildList(allAddrs);
+		    ret = buildList(head, allAddrs);
 		    if(ret == NULL)
 		    {
 		      printf("got no data\n");
@@ -233,7 +233,7 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
 //####################################################################################
 
 //build new peerNode List with all the sockaddr_in
-struct nodePeer* buildList(struct sockaddr_in* allAddrs)
+struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
 {
   printf("start buildList\n"); 
   

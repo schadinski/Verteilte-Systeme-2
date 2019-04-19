@@ -62,7 +62,7 @@ void sendExit(int, char [32], struct sockaddr_in);
 struct nodePeer* linkToChat(int, struct sockaddr_in*, unsigned int, struct nodePeer*);
 void sendAnswer(int, struct nodePeer* , struct sockaddr_in);
 
-struct nodePeer* buildList(struct sockaddr_in*);
+struct nodePeer* buildList(struct nodePeer*,struct sockaddr_in*);
 int getListLength(struct nodePeer*);
 void printList(struct nodePeer*);
 void pushNode(struct nodePeer*, struct sockaddr_in);
