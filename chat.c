@@ -47,11 +47,12 @@ int main(int argc, char *argv[])
         perror("bind()");
       }
     // own node is first in list
+    printf("length of list except 0, is %d\n", getListLength(head) );
     struct nodePeer localNode;
     localNode.addr = myAddr;
     localNode.nextPeer = NULL;
     head->nextPeer = &localNode;
-    printf("length of list is %d\n", getListLength(head) );
+    printf("length of list except 1, is %d\n", getListLength(head) );
     
     //debug
 //     struct nodePeer debug;
@@ -62,11 +63,11 @@ int main(int argc, char *argv[])
     //check if i am the first peer
     if (strcmp(argv[1], argv[2])==0)
     {
-      printf("I am first\n");
+      //printf("I am first\n");
     }
     else
     {
-      printf("not the first\n");
+      //printf("not the first\n");
       
       //build friend addr
       struct sockaddr_in friendAddr;
@@ -92,6 +93,7 @@ int main(int argc, char *argv[])
 	{
 	  printf("Error: Get no peer addresses\n");
 	}
+	printf(" tmp addr after link to chat: %s\n", inet_ntoa(tmp->addr.sin_addr));
 	localNode.nextPeer = tmp;// 	printf(" tmp addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
 
 //  	printf(" first addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
@@ -105,7 +107,7 @@ int main(int argc, char *argv[])
 // 	printf(" second addr after link to chat: %s\n", inet_ntoa(debugging.addr.sin_addr));
 // 	
 
-	printf("length of list after link to chat is %d\n", getListLength(head) );
+	printf("length of list after link to chat except 2, is %d\n", getListLength(head) );
 	
 
 	sleep(5);	
