@@ -65,5 +65,6 @@ void sendAnswer(int, struct nodePeer* , struct sockaddr_in);
 struct nodePeer* buildList(struct sockaddr_in*);
 int getListLength(struct nodePeer*);
 void printList(struct nodePeer*);
+void pushNode(struct nodePeer*, struct sockaddr_in);
 
 #endif /* MYHEADER_H */

@@ -242,22 +242,24 @@ struct nodePeer* buildList(struct sockaddr_in* allAddrs)
   
   while(allAddrs->sin_family == AF_INET)
   {
-    struct nodePeer newNode;    
-    newNode.addr = *allAddrs;
-    
-    printf("in list: addr from sockaddr* is %s\n",  inet_ntoa(allAddrs->sin_addr));
-    printf("in list: addr from newNode is %s\n",  inet_ntoa(newNode.addr.sin_addr));
-    
-    struct nodePeer* tmp;
-    tmp = head->nextPeer;
-    printf("safe head.next\n");
-    
-    head->nextPeer = &newNode;
-    printf("after head->nextPeer = &newNode;\n");
-    newNode.nextPeer = tmp;
-    printf("after newNode.nextPeer = tmp;\n");
+    pushNode(head, *allAddrs);
     allAddrs++;
-    printf("after allAddrs++;\n");
+    //     struct nodePeer newNode;    
+//     newNode.addr = *allAddrs;
+//     
+//     printf("in list: addr from sockaddr* is %s\n",  inet_ntoa(allAddrs->sin_addr));
+//     printf("in list: addr from newNode is %s\n",  inet_ntoa(newNode.addr.sin_addr));
+//     
+//     struct nodePeer* tmp;
+//     tmp = head->nextPeer;
+//     printf("safe head.next\n");
+//     
+//     head->nextPeer = &newNode;
+//     printf("after head->nextPeer = &newNode;\n");
+//     newNode.nextPeer = tmp;
+//     printf("after newNode.nextPeer = tmp;\n");
+//     allAddrs++;
+//     printf("after allAddrs++;\n");
   }
   printf("end buildList\n");
   return head;
@@ -300,3 +302,19 @@ void printList(struct nodePeer* head)
  
  printf("length is %d\n", ret);
 }
+
+//######################################################################################
+
+void pushNode(struct nodePeer* head, struct sockaddr_in data)
+{
+  struct nodePeer* current = head;
+  while(current->nextPeer != NULL)
+  {
+    current = current->nextPeer;
+  }
+  
+  current->nextPeer = malloc(sizeof(struct nodePeer));
+  current->nextPeer->addr = data;
+  current->nextPeer->nextPeer = NULL;
+}
+  
