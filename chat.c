@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 	{
 	  printf("Error: Get no peer addresses\n");
 	}
-// 	printf(" tmp addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
+	localNode.nextPeer = tmp;// 	printf(" tmp addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
 
 //  	printf(" first addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
 //	head->nextPeer = &tmp;
