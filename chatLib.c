@@ -161,6 +161,7 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
 		    {
 		      printf("got no data\n");
 		    }
+		    	printf(" ret addr in link to chat: %s\n", inet_ntoa(ret->addr.sin_addr));
                     break;                
     default: 	    printf("Error: got message without typ answer\n");
                     break;
