@@ -248,11 +248,11 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
     printf("in list: addr from sockaddr* is %s\n",  inet_ntoa(allAddrs->sin_addr));
     printf("in list: addr from newNode is %s\n",  inet_ntoa(newNode.addr.sin_addr));
     
-    struct nodePeer tmp;
-    tmp.nextPeer = head->nextPeer;
+    struct nodePeer* tmp;
+    tmp = head->nextPeer;
     
     head->nextPeer = &newNode;
-    newNode.nextPeer = tmp.nextPeer;
+    newNode.nextPeer = tmp;
     allAddrs++;
   }
   printf("end buildList\n");
