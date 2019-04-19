@@ -81,8 +81,8 @@ int main(int argc, char *argv[])
          struct nodePeer tmp;// = (struct nodePeer*)malloc(sizeof(struct nodePeer));
  	tmp = *head->nextPeer;
  	printf(" tmp addr is my own: %s\n", inet_ntoa(tmp.addr.sin_addr));
-      	printList(head);
-	sleep(5);
+      	//printList(head);
+	//sleep(5);
 	//tmp->nextPeer = NULL;
       printf("before linktochat\n");
       //send discover
