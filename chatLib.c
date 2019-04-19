@@ -250,10 +250,14 @@ struct nodePeer* buildList(struct sockaddr_in* allAddrs)
     
     struct nodePeer* tmp;
     tmp = head->nextPeer;
+    printf("safe head.next\n");
     
     head->nextPeer = &newNode;
+    printf("after head->nextPeer = &newNode;\n");
     newNode.nextPeer = tmp;
+    printf("after newNode.nextPeer = tmp;\n");
     allAddrs++;
+    printf("after allAddrs++;\n");
   }
   printf("end buildList\n");
   return head;
