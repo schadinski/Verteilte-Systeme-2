@@ -10,7 +10,7 @@
 // setup memory, filter msg type and output
 void recvPeerMsg(int fd, struct nodePeer* head)
 {
-  printf("recvfrom\n");
+  //printf("recvfrom\n");
   struct chatPDU* pCurrMsg = malloc(sizeof(struct chatPDU));
   struct sockaddr_in* peerAddr = malloc(sizeof(struct sockaddr_in));
   unsigned int peerAddrlen;
@@ -37,9 +37,6 @@ void recvPeerMsg(int fd, struct nodePeer* head)
     case DISCOVER:  sendAnswer(fd, head, *peerAddr);
                     break;                
     case ENTRY:     printf("%s ist dem Chat beigetreten\n", pCurrMsg->name);
-		    // TODO: add new addr to allPeerAddrs
-		    //size_t noOfPeers = getNoOfPeers(allPeerAddrs);
-// 		    allPeerAddrs[noOfPeers+1] = *peerAddr;
                     break;
     case MSG: 	    printf("%s: %s", pCurrMsg->name, pCurrMsg->msg);
                     break;
@@ -56,7 +53,7 @@ void recvPeerMsg(int fd, struct nodePeer* head)
 // setup memory and PDU, send
 void sendMsg(int fd, char nickname[32], char* buf2, struct sockaddr_in peerAddr)
 {
-  printf("send\n");
+  //printf("send\n");
   int sendbytes;
   struct chatPDU* pCurrMsg = malloc(sizeof(struct chatPDU));
   
@@ -77,7 +74,7 @@ void sendMsg(int fd, char nickname[32], char* buf2, struct sockaddr_in peerAddr)
 // setup memory and PDU, send
 void sendEntry(int fd, char nickname[32], struct sockaddr_in peerAddr)
 {
-  printf("entry\n");
+  //printf("entry\n");
   int sendbytes;
   struct chatPDU* pEntryMsg = (struct chatPDU*)malloc(sizeof(struct chatPDU));
     
@@ -98,7 +95,7 @@ void sendEntry(int fd, char nickname[32], struct sockaddr_in peerAddr)
 // setup memory and PDU, send
 void sendExit(int fd, char nickname[13], struct sockaddr_in peerAddr)
 {
-  printf("exit\n");
+  //printf("exit\n");
   int sendbytes;
   struct chatPDU* pExitMsg = malloc(sizeof(struct chatPDU));
   pExitMsg->typ = EXIT;
@@ -117,7 +114,7 @@ void sendExit(int fd, char nickname[13], struct sockaddr_in peerAddr)
 //send discover msg, recv answer from friend, build list of all peers
 void linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort, struct nodePeer* head)
 {
-  printf("start linktochat\n");
+  //printf("start linktochat\n");
   int sendbytes;
   
   //build pdu
@@ -147,22 +144,16 @@ void linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort,
   //printf("recvbytes in linktochat %d\n", recvBytes);
   
   struct sockaddr_in* allAddrs = (struct sockaddr_in*) malloc(sizeof(*pAnswerMsg->msg));  
-  //struct nodePeer* ret = NULL;
   
   switch(pAnswerMsg->typ)
   {
-    case ANSWER:    // pAnswerMsg->msg; enthält sockaddr_in als char[] bzw char*
-		    allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
+    case ANSWER:    allAddrs = (struct sockaddr_in*)pAnswerMsg->msg;
 		    //printf("linktochat: port received is : %d\n", ntohs(allAddrs[0].sin_port) );
 		    //printf("linktochat: addr recewived is: %s\n", inet_ntoa(allAddrs[0].sin_addr));
 		   
-		    //ret = 
 		    buildList(head, allAddrs);
-// 		    if(ret == NULL)
-// 		    {
-// 		      printf("got no data\n");
-// 		    }
-// 		    	printf(" ret addr in link to chat: %s\n", inet_ntoa(ret->addr.sin_addr));
+
+// 		    printf(" ret addr in link to chat: %s\n", inet_ntoa(ret->addr.sin_addr));
                     break;                
     default: 	    printf("Error: got message without typ answer\n");
                     break;
@@ -173,7 +164,7 @@ void linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort,
 //   free(pDiscoverMsg);
 //   free(pAnswerMsg);
 //   free(allAddrs);
-printf("end link to chat\n");
+//printf("end link to chat\n");
   //return ret;
 }
 
@@ -185,9 +176,6 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   
   //printf("sendAnswer: send port %d\nsendAnswer: send addr %s\n",
 //	 ntohs(allPeerAddrs[0].sin_port), inet_ntoa(allPeerAddrs[0].sin_addr));
-  
-  //add new Peer to list
-  pushNode(head, newPeerAddr);
   
   //build PDU
   struct nodePeer currNode;
@@ -201,7 +189,7 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
     currNode = *currNode.nextPeer;
     //copy
     allAddr[i] = currNode.addr;
-    printf("addr is %s\n", inet_ntoa(allAddr->sin_addr));
+    //printf("addr is %s\n", inet_ntoa(allAddr->sin_addr));
   }
   
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));
@@ -224,6 +212,9 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   }
   //printf("sendAnswer: send %d bytes\n", sendbytes);
   
+  //add new Peer to list
+  pushNode(head, newPeerAddr);
+  
   free(pAnswerMsg);
 }
 
@@ -232,7 +223,7 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
 //build new peerNode List with all the sockaddr_in
 void buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
 {
-  printf("start buildList\n"); 
+  //printf("start buildList\n"); 
   
   //struct nodePeer* tmp = (struct nodePeer*)malloc(sizeof(struct nodePeer));
   //tmpNode.nextPeer = head->nextPeer;
@@ -241,24 +232,10 @@ void buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
   {
     pushNode(head, *allAddrs);
     allAddrs++;
-    //     struct nodePeer newNode;    
-//     newNode.addr = *allAddrs;
-//     
 //     printf("in list: addr from sockaddr* is %s\n",  inet_ntoa(allAddrs->sin_addr));
-     printf("in list: addr from allAddrs is %s\n",  inet_ntoa(allAddrs->sin_addr));
-//     
-//     struct nodePeer* tmp;
-//     tmp = head->nextPeer;
-//     printf("safe head.next\n");
-//     
-//     head->nextPeer = &newNode;
-//     printf("after head->nextPeer = &newNode;\n");
-//     newNode.nextPeer = tmp;
-//     printf("after newNode.nextPeer = tmp;\n");
-//     allAddrs++;
-//     printf("after allAddrs++;\n");
+     //printf("in list: addr from allAddrs is %s\n",  inet_ntoa(allAddrs->sin_addr));
   }
-  printf("end buildList\n");
+  //printf("end buildList\n");
   //return head;
 }
 
@@ -266,7 +243,7 @@ void buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
 
 int getListLength(struct nodePeer* head)
 {
-  printf("start getListLength\n");
+  //printf("start getListLength\n");
  int ret = 0;
  struct nodePeer* tmp;
  tmp = head;
@@ -275,8 +252,6 @@ int getListLength(struct nodePeer* head)
   ret++;
   tmp = tmp->nextPeer;
  }
-
- 
  //printf("length is %d\n", ret);
  return ret; 
 }
@@ -304,7 +279,7 @@ void printList(struct nodePeer* head)
 
 void pushNode(struct nodePeer* head, struct sockaddr_in data)
 {
-  printf("in push: addr from sockaddr is %s\n",  inet_ntoa(data.sin_addr));
+  //printf("in push: addr from sockaddr is %s\n",  inet_ntoa(data.sin_addr));
   //printf("in list: addr from newNode is %s\n",  inet_ntoa(newNode.addr.sin_addr));
   
   struct nodePeer* current = head;
