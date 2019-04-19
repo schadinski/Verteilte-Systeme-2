@@ -115,7 +115,7 @@ void sendExit(int fd, char nickname[13], struct sockaddr_in peerAddr)
 //####################################################################################
 
 //send discover msg, recv answer from friend, build list of all peers
-struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort, struct nodePeer* head)
+void linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort, struct nodePeer* head)
 {
   printf("start linktochat\n");
   int sendbytes;
@@ -147,7 +147,7 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
   //printf("recvbytes in linktochat %d\n", recvBytes);
   
   struct sockaddr_in* allAddrs = (struct sockaddr_in*) malloc(sizeof(*pAnswerMsg->msg));  
-  struct nodePeer* ret = NULL;
+  //struct nodePeer* ret = NULL;
   
   switch(pAnswerMsg->typ)
   {
@@ -156,12 +156,13 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
 		    //printf("linktochat: port received is : %d\n", ntohs(allAddrs[0].sin_port) );
 		    //printf("linktochat: addr recewived is: %s\n", inet_ntoa(allAddrs[0].sin_addr));
 		   
-		    ret = buildList(head, allAddrs);
-		    if(ret == NULL)
-		    {
-		      printf("got no data\n");
-		    }
-		    	printf(" ret addr in link to chat: %s\n", inet_ntoa(ret->addr.sin_addr));
+		    //ret = 
+		    buildList(head, allAddrs);
+// 		    if(ret == NULL)
+// 		    {
+// 		      printf("got no data\n");
+// 		    }
+// 		    	printf(" ret addr in link to chat: %s\n", inet_ntoa(ret->addr.sin_addr));
                     break;                
     default: 	    printf("Error: got message without typ answer\n");
                     break;
@@ -173,7 +174,7 @@ struct nodePeer* linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned in
 //   free(pAnswerMsg);
 //   free(allAddrs);
 printf("end link to chat\n");
-  return ret;
+  //return ret;
 }
 
 //####################################################################################
@@ -233,7 +234,7 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
 //####################################################################################
 
 //build new peerNode List with all the sockaddr_in
-struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
+void buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
 {
   printf("start buildList\n"); 
   
@@ -262,7 +263,7 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
 //     printf("after allAddrs++;\n");
   }
   printf("end buildList\n");
-  return head;
+  //return head;
 }
 
 //####################################################################################
