@@ -86,8 +86,9 @@ int main(int argc, char *argv[])
 	//tmp->nextPeer = NULL;
       printf("before linktochat\n");
       //send discover
-	localNode.nextPeer = linkToChat(localFD, pFriendAddr, localPort, head);
-	if(localNode.nextPeer == NULL)
+      struct nodePeer* tmp = NULL;
+	tmp = linkToChat(localFD, pFriendAddr, localPort, head);
+	if(tmp == NULL)
 	{
 	  printf("Error: Get no peer addresses\n");
 	}
