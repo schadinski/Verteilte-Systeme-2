@@ -284,8 +284,9 @@ void printList(struct nodePeer* head)
  tmp = *head;
  while(tmp.nextPeer != NULL)
  {
+     tmp = *tmp.nextPeer;
   printf("Addr is %s\n",inet_ntoa(tmp.addr.sin_addr)); 
-  tmp = *tmp.nextPeer;
+
  }
 
  
