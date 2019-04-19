@@ -186,14 +186,13 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   //printf("sendAnswer: send port %d\nsendAnswer: send addr %s\n",
 //	 ntohs(allPeerAddrs[0].sin_port), inet_ntoa(allPeerAddrs[0].sin_addr));
   
-  //build PDU
+  //add new Peer to list
+  pushNode(head, newPeerAddr);
   
-  //TODO copiere alle struct sockaddr_in in neue var(typ struct sockaddr_in[]) und versende diese
+  //build PDU
   struct nodePeer currNode;
   currNode = *head;
-//   currNode = *currNode.nextPeer;
   
-  //struct sockaddr_in* allAddr = (struct sockaddr_in*) malloc(getListLength(head) * sizeof(struct sockaddr_in));
   int length = getListLength(head);
   struct sockaddr_in allAddr[length];
   int i= 0;
@@ -201,11 +200,8 @@ void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
   {
     currNode = *currNode.nextPeer;
     //copy
-    //memcpy(&allAddr[i],currNode.addr, sizeof(allAddr[i]));
     allAddr[i] = currNode.addr;
     printf("addr is %s\n", inet_ntoa(allAddr->sin_addr));
-    //allAddr++;
-    
   }
   
   struct chatPDU* pAnswerMsg = malloc(sizeof(struct chatPDU));

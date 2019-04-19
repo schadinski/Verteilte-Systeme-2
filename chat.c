@@ -216,7 +216,7 @@ int main(int argc, char *argv[])
 	 printf("send msg, after setup currPeer\n");
 	  do
 	  {
-	    	      currPeer = *currPeer.nextPeer;
+	      currPeer = *currPeer.nextPeer;
 	      printf("while send msg: addr is: %s\n", inet_ntoa(currPeer.addr.sin_addr));
 	      sendMsg(localFD, nickname, buf2, currPeer.addr);
 
