@@ -248,7 +248,7 @@ struct nodePeer* buildList(struct nodePeer* head, struct sockaddr_in* allAddrs)
 //     newNode.addr = *allAddrs;
 //     
 //     printf("in list: addr from sockaddr* is %s\n",  inet_ntoa(allAddrs->sin_addr));
-//     printf("in list: addr from newNode is %s\n",  inet_ntoa(newNode.addr.sin_addr));
+     printf("in list: addr from allAddrs is %s\n",  inet_ntoa(allAddrs->sin_addr));
 //     
 //     struct nodePeer* tmp;
 //     tmp = head->nextPeer;
@@ -307,6 +307,9 @@ void printList(struct nodePeer* head)
 
 void pushNode(struct nodePeer* head, struct sockaddr_in data)
 {
+  printf("in push: addr from sockaddr is %s\n",  inet_ntoa(data.sin_addr));
+  //printf("in list: addr from newNode is %s\n",  inet_ntoa(newNode.addr.sin_addr));
+  
   struct nodePeer* current = head;
   while(current->nextPeer != NULL)
   {
