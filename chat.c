@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 
 //  	printf(" first addr after link to chat: %s\n", inet_ntoa(tmp.addr.sin_addr));
 	head->nextPeer = &tmp;
-	printList(head);
+	//printList(head);
 	//tmp ist Kopie von lacalNode
 // 	struct nodePeer debugging;
 // 	debugging = *tmp.nextPeer;
@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
       //printf("addr %s\n", inet_ntoa(allPeerAddrs[i].sin_addr));
       printf("while send entry: addr is: %s\n", inet_ntoa(currPeer.addr.sin_addr));
       sendEntry(localFD, nickname, currPeer.addr);
-      sleep(5);
+      //sleep(5);
       
   }
   while(currPeer.nextPeer != NULL);

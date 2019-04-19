@@ -34,6 +34,7 @@ static unsigned short ports[10] = { 1050,
   //			"10.0.2.15",
 			"192.168.178.81" };
 */
+ extern struct nodePeer* head;
 
 typedef enum{
   DISCOVER,

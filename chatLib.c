@@ -5,6 +5,8 @@
 
 #include "chatLib.h"
 
+ struct nodePeer* head;
+
 // setup memory, filter msg type and output
 void recvPeerMsg(int fd, struct nodePeer* head)
 {
