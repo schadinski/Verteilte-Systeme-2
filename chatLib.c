@@ -147,7 +147,7 @@ void linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort,
   }
   
   free(pDiscoverMsg);
-  //free(pAnswerMsg);
+  free(pAnswerMsg);
   //free(allAddrs);
 }
 

@@ -105,8 +105,6 @@ int main(int argc, char *argv[])
 
 	  }
 	  while(currPeer.nextPeer != NULL);
-	  
-	  currPeer.nextPeer = NULL;
 	  break;
        }
        else
