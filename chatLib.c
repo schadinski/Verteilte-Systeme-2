@@ -39,6 +39,7 @@ void recvPeerMsg(int fd, struct nodePeer* head)
     case MSG: 	    printf("%s: %s", pCurrMsg->name, pCurrMsg->msg);
                     break;
     case EXIT:      printf("%s hat den Chat verlassen\n", pCurrMsg->name);
+		    removeNodeByAddr(head, *peerAddr);
                     break;
     default: 	    printf("Error: got message without typ\n");
   }
@@ -228,4 +229,42 @@ void pushNode(struct nodePeer* head, struct sockaddr_in data)
   current->nextPeer->addr = data;
   current->nextPeer->nextPeer = NULL;
 }
+
+//######################################################################################
+
+void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addr)
+{
+ struct nodePeer* tmp;
+ struct nodePeer* iterator;
+ iterator = head;
+ 
+ //get IP to remove 
+ char* ipToRemove = inet_ntoa(addr.sin_addr);
+ 
+ char* currIP = NULL;
+ 
+ while(iterator->nextPeer != NULL)
+ {
+  //get current IP
+   currIP = inet_ntoa(iterator->nextPeer->addr.sin_addr);
+   
+  //compare current IP with IP to remove
+  if(strcmp(ipToRemove, currIP) == 0)
+  {
+    //if node to remove is the last in list
+    if(iterator->nextPeer->nextPeer == NULL)
+    {
+       iterator->nextPeer = NULL;
+    }
+    else
+    {
+    //remove this node from list
+    iterator->nextPeer = iterator->nextPeer->nextPeer;
+    }
+  }  
+ }
+}
+
+
+
   
