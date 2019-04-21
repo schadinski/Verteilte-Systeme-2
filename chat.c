@@ -124,7 +124,6 @@ int main(int argc, char *argv[])
    }
  close(localPort);
  free(nickname);
-// free(head);
- free(pMyAddr);
+ free(head);
  return 0;
 }
