@@ -244,7 +244,8 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addrToRemove)
  char* currIP = (char*)malloc(sizeof(struct in_addr));
  
  printList(head);
- while(current->nextPeer != NULL)
+ 
+ do
  {
   //get current IP
    currIP = inet_ntoa(current->nextPeer->addr.sin_addr);
@@ -267,7 +268,7 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addrToRemove)
     printf("removed ip %s\n", currIP);
   }
   current = current->nextPeer;
- }
+ }while(current->nextPeer != NULL);
 }
 
 //######################################################################################
