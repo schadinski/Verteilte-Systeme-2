@@ -233,13 +233,13 @@ void pushNode(struct nodePeer* head, struct sockaddr_in data)
 
 //######################################################################################
 
-void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addr)
+void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addrToRemove)
 {
  struct nodePeer* tmp;
  struct nodePeer* current = head;
  
  //get IP to remove 
- char* ipToRemove = inet_ntoa(addr.sin_addr);
+ char* ipToRemove = inet_ntoa(addrToRemove.sin_addr);
  printf("ip to remove %s\n", ipToRemove);
  
  char* currIP = NULL;
