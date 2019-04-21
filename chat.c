@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     head->nextPeer = &localNode;
      
     //check if i am not the first peer
-    if (strcmp(argv[1], argv[2])!=0)
+    if(strcmp(argv[1], argv[2])!=0)
     {
       //build friend addr
       struct sockaddr_in friendAddr;
