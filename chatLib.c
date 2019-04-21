@@ -218,6 +218,7 @@ int getListLength(struct nodePeer* head)
 
 //######################################################################################
 
+// Add node at the end of the list
 void pushNode(struct nodePeer* head, struct sockaddr_in data)
 {  
   struct nodePeer* current = head;
@@ -236,36 +237,35 @@ void pushNode(struct nodePeer* head, struct sockaddr_in data)
 void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addr)
 {
  struct nodePeer* tmp;
- struct nodePeer* iterator;
- iterator = head;
+ struct nodePeer* current = head;
  
  //get IP to remove 
  char* ipToRemove = inet_ntoa(addr.sin_addr);
  
  char* currIP = NULL;
  
- while(iterator->nextPeer != NULL)
+ while(current->nextPeer != NULL)
  {
   //get current IP
-   currIP = inet_ntoa(iterator->nextPeer->addr.sin_addr);
+   currIP = inet_ntoa(current->nextPeer->addr.sin_addr);
    
   //compare current IP with IP to remove
   if(strcmp(ipToRemove, currIP) == 0)
   {
     //if node to remove is the last in list
-    if(iterator->nextPeer->nextPeer == NULL)
+    if(current->nextPeer->nextPeer == NULL)
     {
       printf("remove last node\n");
-      iterator->nextPeer = NULL;
+      current->nextPeer = NULL;
     }
     else
     {
       printf("remove ip, not last node\n");
     //remove this node from list
-    iterator->nextPeer = iterator->nextPeer->nextPeer;
+    current->nextPeer = current->nextPeer->nextPeer;
     }
   }
-  iterator = iterator->nextPeer;
+  current = current->nextPeer;
  }
 }
 

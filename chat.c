@@ -76,12 +76,13 @@ int main(int argc, char *argv[])
   }
   while(currPeer.nextPeer != NULL);
   
-  currPeer.nextPeer = NULL;
+
   FD_ZERO(&readset);
   
   // leave with !Exit
    while(1)
    {
+       currPeer.nextPeer = NULL;
      char* buf2 = malloc(2096* sizeof(char));
      FD_SET(localFD, &readset);
      FD_SET(0, &readset);
@@ -117,7 +118,7 @@ int main(int argc, char *argv[])
 	  }
 	  while(currPeer.nextPeer != NULL);
 	  
-	  currPeer.nextPeer = NULL;
+	 // currPeer.nextPeer = NULL;
        }
      }
      free(buf2);
