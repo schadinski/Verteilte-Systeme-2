@@ -155,6 +155,7 @@ void linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort,
 
 void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
 { 
+  printf("/start sendAnswer\n");
   //build PDU
   struct nodePeer currNode;
   currNode = *head;
@@ -254,10 +255,12 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addr)
     //if node to remove is the last in list
     if(iterator->nextPeer->nextPeer == NULL)
     {
-       iterator->nextPeer = NULL;
+      printf("remove last node\n");
+      iterator->nextPeer = NULL;
     }
     else
     {
+      printf("remove ip, not last node\n");
     //remove this node from list
     iterator->nextPeer = iterator->nextPeer->nextPeer;
     }
