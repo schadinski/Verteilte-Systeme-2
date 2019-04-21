@@ -261,7 +261,8 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addr)
     //remove this node from list
     iterator->nextPeer = iterator->nextPeer->nextPeer;
     }
-  }  
+  }
+  iterator = iterator->nextPeer;
  }
 }
 
