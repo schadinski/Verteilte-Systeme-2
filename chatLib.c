@@ -268,6 +268,7 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addrToRemove)
     current->nextPeer = current->nextPeer->nextPeer;
     }
     printf("removed ip %s\n", currIP);
+    break;
   }
   else
   {
