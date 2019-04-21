@@ -235,49 +235,30 @@ void pushNode(struct nodePeer* head, struct sockaddr_in data)
 
 void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addrToRemove)
 {
- struct nodePeer* tmp;
  struct nodePeer* current = head;
-  printList(head);
- 
- //get IP to remove 
- char* ipToRemove = inet_ntoa(addrToRemove.sin_addr);
- printf("ip to remove %s\n", ipToRemove);
- char* currIP = (char*)malloc(sizeof(struct in_addr));
- 
-
  
  while(current->nextPeer != NULL)
  {
-   printf("start while\n");
-  //get current IP
-   //currIP = inet_ntoa(current->nextPeer->addr.sin_addr);
-   //printf("currIP is %s\n", currIP);
   //compare current IP with IP to remove
   if(ntohl(current->nextPeer->addr.sin_addr.s_addr) == ntohl(addrToRemove.sin_addr.s_addr) )
- //   && htons(current->nextPeer->addr.sin_port) == htons(addrToRemove.sin_port) )
   {
     //if node to remove is the last in list
-      if(current->nextPeer->nextPeer == NULL)
-      {
-       printf("remove last node\n");
-       current->nextPeer = NULL;
-      }
-      else
-      {
-      printf("remove ip, not last node\n");
-    //remove this node from list
-    current->nextPeer = current->nextPeer->nextPeer;
+    if(current->nextPeer->nextPeer == NULL)
+    {
+      current->nextPeer = NULL;
     }
-    printf("removed ip %s\n", currIP);
+    else
+    {
+      //remove this node from list
+      current->nextPeer = current->nextPeer->nextPeer;
+    }
     break;
   }
   else
   {
-    printf("else\n");
-  current = current->nextPeer;
+    current = current->nextPeer;
   }
  }
- printf("end removeNodeByAddr\n");
 }
 
 //######################################################################################

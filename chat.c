@@ -82,7 +82,6 @@ int main(int argc, char *argv[])
   // leave with !Exit
    while(1)
    {
-     printList(head);
      currPeer.nextPeer = NULL;
      char* buf2 = malloc(2096* sizeof(char));
      FD_SET(localFD, &readset);
