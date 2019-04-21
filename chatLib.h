@@ -43,5 +43,6 @@ void buildList(struct nodePeer*,struct sockaddr_in*);
 int getListLength(struct nodePeer*);
 void pushNode(struct nodePeer*, struct sockaddr_in);
 void removeNodeByAddr(struct nodePeer*, struct sockaddr_in);
+void printList(struct nodePeer*);
 
 #endif /* MYHEADER_H */

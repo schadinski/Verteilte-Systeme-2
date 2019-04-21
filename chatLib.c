@@ -271,6 +271,18 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addr)
  }
 }
 
+//######################################################################################
 
+void printList(struct nodePeer* head)
+{
+  int counter = 0;
+  struct nodePeer* current = head;
+  while(current->nextPeer != NULL)
+  {
+    current = current->nextPeer;
+    counter++;
+    printf("Ip no %d is %s\n", counter, inet_ntoa(current->addr.sin_addr) );
+  }
+}
 
   

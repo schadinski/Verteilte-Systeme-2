@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     printf("Enter name:");
     nameChars = getline(&nickname, &nameLen, stdin);
   }
-  
+  printList(head);
     struct nodePeer currPeer;
     currPeer = *head;
   do
