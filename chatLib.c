@@ -253,17 +253,17 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addr)
   if(strcmp(ipToRemove, currIP) == 0)
   {
     //if node to remove is the last in list
-    if(current->nextPeer->nextPeer == NULL)
-    {
-      printf("remove last node\n");
-      current->nextPeer = NULL;
-    }
-    else
-    {
-      printf("remove ip, not last node\n");
+//     if(current->nextPeer->nextPeer == NULL)
+//     {
+//       printf("remove last node\n");
+//       current->nextPeer = NULL;
+//     }
+//     else
+//     {
+    //  printf("remove ip, not last node\n");
     //remove this node from list
     current->nextPeer = current->nextPeer->nextPeer;
-    }
+ //   }
     printf("removed ip %s\n", currIP);
   }
   current = current->nextPeer;
