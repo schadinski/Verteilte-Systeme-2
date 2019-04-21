@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     printf("Enter name:");
     nameChars = getline(&nickname, &nameLen, stdin);
   }
-  printList(head);
+
     struct nodePeer currPeer;
     currPeer = *head;
   do
@@ -82,7 +82,8 @@ int main(int argc, char *argv[])
   // leave with !Exit
    while(1)
    {
-       currPeer.nextPeer = NULL;
+     printList(head);
+     currPeer.nextPeer = NULL;
      char* buf2 = malloc(2096* sizeof(char));
      FD_SET(localFD, &readset);
      FD_SET(0, &readset);
@@ -116,9 +117,7 @@ int main(int argc, char *argv[])
 	      currPeer = *currPeer.nextPeer;
 	      sendMsg(localFD, nickname, buf2, currPeer.addr);
 	  }
-	  while(currPeer.nextPeer != NULL);
-	  
-	 // currPeer.nextPeer = NULL;
+	  while(currPeer.nextPeer != NULL);	  
        }
      }
      free(buf2);

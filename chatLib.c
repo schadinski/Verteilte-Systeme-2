@@ -155,7 +155,6 @@ void linkToChat(int fd, struct sockaddr_in* pFriendAddr, unsigned int localPort,
 
 void sendAnswer(int fd, struct nodePeer* head, struct sockaddr_in newPeerAddr)
 { 
-  printf("/start sendAnswer\n");
   //build PDU
   struct nodePeer currNode;
   currNode = *head;
@@ -244,7 +243,7 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addr)
  printf("ip to remove %s\n", ipToRemove);
  
  char* currIP = NULL;
- 
+ printList(head);
  while(current->nextPeer != NULL)
  {
   //get current IP
