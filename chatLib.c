@@ -241,6 +241,7 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addr)
  
  //get IP to remove 
  char* ipToRemove = inet_ntoa(addr.sin_addr);
+ printf("ip to remove %s\n", ipToRemove);
  
  char* currIP = NULL;
  
@@ -264,6 +265,7 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addr)
     //remove this node from list
     current->nextPeer = current->nextPeer->nextPeer;
     }
+    printf("removed ip %s\n", currIP);
   }
   current = current->nextPeer;
  }
