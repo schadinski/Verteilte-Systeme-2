@@ -242,7 +242,6 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addrToRemove)
  char* ipToRemove = inet_ntoa(addrToRemove.sin_addr);
  printf("ip to remove %s\n", ipToRemove);
  
- char* currIP = NULL;
  printList(head);
  while(current->nextPeer != NULL)
  {
@@ -250,7 +249,7 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addrToRemove)
    currIP = inet_ntoa(current->nextPeer->addr.sin_addr);
    printf("currIP is %s\n", currIP);
   //compare current IP with IP to remove
-  if(strcmp(ipToRemove, currIP) != 0)
+  if(current->nextPeer->addr.sin_addr.s_addr == addr2.sin_addr.s_addr )
   {
     //if node to remove is the last in list
      if(current->nextPeer->nextPeer == NULL)
