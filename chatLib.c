@@ -248,7 +248,7 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addr)
  {
   //get current IP
    currIP = inet_ntoa(current->nextPeer->addr.sin_addr);
-   
+   printf("currIP is %s\n", currIP);
   //compare current IP with IP to remove
   if(strcmp(ipToRemove, currIP) == 0)
   {
