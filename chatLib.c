@@ -256,13 +256,13 @@ void removeNodeByAddr(struct nodePeer* head, struct sockaddr_in addr)
 //     if(current->nextPeer->nextPeer == NULL)
 //     {
 //       printf("remove last node\n");
-//       current->nextPeer = NULL;
+       current->nextPeer = NULL;
 //     }
 //     else
 //     {
     //  printf("remove ip, not last node\n");
     //remove this node from list
-    current->nextPeer = current->nextPeer->nextPeer;
+  //  current->nextPeer = current->nextPeer->nextPeer;
  //   }
     printf("removed ip %s\n", currIP);
   }
